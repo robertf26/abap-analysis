@@ -1,0 +1,57 @@
+@url = http://TUM_I01_ADT.dest
+
+### Get the Discovery Information from the ADT API and fetch the CRSF Token for all subsequent POST requests
+# @name GetCrsfToken
+GET {{url}}/sap/bc/adt/discovery
+X-CSRF-Token: fetch
+ 
+### Perform a Search over all development objects matching ZD256*
+GET {{url}}/sap/bc/adt/repository/informationsystem/search?operation=SEARCH_GENERIC&query=ZD256*
+ 
+### Retrieve the top level package structure - contains the ZD256_DEMO package and a lot more
+POST {{url}}/sap/bc/adt/repository/nodestructure
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+ 
+### Retrieve the content of the ZD256_DEMO Package
+POST {{url}}/sap/bc/adt/repository/nodestructure?parent_name=ZD256_DEMO
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+ 
+### Retrieve the object structure of the ZCL_ZD256_CUSTOMER Class
+GET {{url}}/sap/bc/adt/repository/objectstructure?objectname=ZCL_ZD256_CUSTOMER&objecttype=CLAS%2FOC
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+ 
+### Retrieve some metadata about the Class from the VIT (to be clarified what VIT is)
+GET {{url}}/sap/bc/adt/vit/wb/object_type/clasom/object_name/ZCL_ZD256_CUSTOMER%20%20%20%20%20%20%20%20%20%20%20%20GET_CUSTOMERS_STATIC
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+ 
+### Retrieve Class Metadata of the ZCL_ZD256_CUSTOMER Class
+GET {{url}}/sap/bc/adt/oo/classes/ZCL_ZD256_CUSTOMER
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+ 
+### Retrieve ABAP Source Code and ABAP Doc documentation for the Class of the ZCL_ZD256_CUSTOMER Class
+GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/source/main?withAbapDocFromShortTexts=true
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+ 
+### Retrieve ABAP Source Code for the Class of the ZCL_ZD256_CUSTOMER Class
+GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/source/main
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+
+### Perform a Search over all programs matching ZD*
+GET {{url}}/sap/bc/adt/repository/informationsystem/search?operation=SEARCH_GENERIC&query=ZD*&objectType=PROG
+ 
+### Get Metadata for Program ZD009_CODECHECK_DEMO_FK01
+GET {{url}}/sap/bc/adt/programs/programs/zd009_codecheck_demo_fk01
+ 
+### Get the ABAP Source Code for Program ZD009_CODECHECK_DEMO_F01
+GET {{url}}/sap/bc/adt/programs/programs/zd009_codecheck_demo_fk01/source/main
