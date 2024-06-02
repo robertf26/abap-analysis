@@ -58,7 +58,7 @@ GET {{url}}/sap/bc/adt/programs/programs/zd009_codecheck_demo_fk01/source/main
 
 
 ### Get Metadata about Packages
-GET {{url}}/sap/bc/adt/ddic/structures/zd256_s_customer
+GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/transports
 X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
 X-SAP-ADT-SessionType: Stateless
 Accept: application/*

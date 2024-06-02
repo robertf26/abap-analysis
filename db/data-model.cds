@@ -55,7 +55,7 @@ entity Classes : cuid {
   modeled : Boolean;
   fixPointArithmetic : Boolean;
   activeUnicodeCheck : Boolean;
-
+  sourceCode : String; //Welchen Datentyp sollte man hier verwenden?
   name : String not null  @mandatory;
   type : String;
   responsible : String;
@@ -94,5 +94,9 @@ entity Programs : cuid {
   createdBy : String;
 
   parent : Association to Packages;
+  
+}
+
+entity transportRequest : cuid {
   
 }
