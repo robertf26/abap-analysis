@@ -55,7 +55,8 @@ entity Classes : cuid {
   modeled : Boolean;
   fixPointArithmetic : Boolean;
   activeUnicodeCheck : Boolean;
-  sourceCode : String; //Welchen Datentyp sollte man hier verwenden?
+  sourceCode : LargeString; //Welchen Datentyp sollte man hier verwenden?
+
   name : String not null  @mandatory;
   type : String;
   responsible : String;
