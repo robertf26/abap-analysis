@@ -1,0 +1,81 @@
+@url = http://TUM_I01_ADT.dest
+###
+GET {{url}}/sap/bc/adt/discovery
+
+
+### Get the Discovery Information from the ADT API and fetch the CRSF Token for all subsequent POST requests
+# @name GetCrsfToken
+GET {{url}}/sap/bc/adt/discovery
+X-CSRF-Token: fetch
+
+###
+GET {{url}}/sap/bc/adt/bopf/businessobjects/$metadata
+
+
+### Perform a Search over all development objects matching ZD256*
+GET {{url}}/sap/bc/adt/repository/informationsystem/search?operation=SEARCH_GENERIC&query=ZD256*
+
+
+### GET 2
+GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer
+Accept:  application/vnd.sap.adt.basic.object.properties+xml
+
+### Retrieve the top level package structure - contains the ZD256_DEMO package and a lot more
+POST {{url}}/sap/bc/adt/repository/nodestructure
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+
+ 
+
+### Retrieve the content of the ZD256_DEMO Package
+POST {{url}}/sap/bc/adt/repository/nodestructure?parent_name=ZD256_DEMO
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+
+
+### Retrieve the content of the ANDERES
+POST {{url}}/sap/bc/adt/repository/nodestructure?parent_name=ZDBR37318
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+
+###GetInfor
+GET {{url}}/sap/bc/adt/vit/wb/object_type/clasocx/object_name/ZCL_ZD256_CUSTOMER
+Accept:  application/vnd.sap.adt.basic.object.properties+xml
+
+### Retrieve the object structure of the ZCL_ZD256_CUSTOMER Class
+GET {{url}}/sap/bc/adt/repository/objectstructure?objectname=ZCL_ZD256_CUSTOMER&objecttype=CLAS%2FOC
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+
+ 
+
+### Retrieve some metadata about the Class from the VIT (to be clarified what VIT is)
+GET {{url}}/sap/bc/adt/vit/wb/object_type/clasom/object_name/ZCL_ZD256_CUSTOMER%20%20%20%20%20%20%20%20%20%20%20%20GET_CUSTOMERS_STATIC
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+
+ 
+
+### Retrieve Class Metadata of the ZCL_ZD256_CUSTOMER Class
+GET {{url}}/sap/bc/adt/oo/classes/ZCL_ZD256_CUSTOMER
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+
+
+### Retrieve ABAP Source Code and ABAP Doc documentation for the Class of the ZCL_ZD256_CUSTOMER Class
+
+GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/source/main?withAbapDocFromShortTexts=true
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+
+ 
+
+### Retrieve ABAP Source Code for the Class of the ZCL_ZD256_CUSTOMER Class
+
+GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/source/main
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
