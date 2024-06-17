@@ -1,0 +1,7 @@
+uri,type,name,packageName,description,OBJECT_TYPE,OBJECT_NAME,TECH_NAME,OBJECT_URI,OBJECT_VIT_URI,EXPANDABLE
+/sap/bc/adt/oo/classes/zd256_cl_exp,CLAS/OC,ZD256_CL_EXP,ZD256_DEMO,Class,CLAS/OC,ZD256_CL_EXP,==============================CP,/sap/bc/adt/oo/classes/zd256_cl_exp,/sap/bc/adt/vit/wb/object_type/clasoc/object_name/ZD256_CL_EXP,X
+/sap/bc/adt/vit/wb/object_type/devck/object_name/ZD256_DEMO,DEVC/K,ZD256_DEMO,ZD256_DEMO,Package,,,,,,
+/sap/bc/adt/vit/gw/sb/project/ZD256_GW_DEMO,IWPR/Q0J,ZD256_GW_DEMO,$TMP,GW Service Builder Project,,,,,,
+/sap/bc/adt/vit/gw/sb/project/ZD256_REDEFINE_TEST,IWPR/Q0J,ZD256_REDEFINE_TEST,ZD256_DEMO,GW Service Builder Project,IWPR,ZD256_REDEFINE_TEST,ZD256_REDEFINE_TEST,/sap/bc/adt/vit/gw/sb/project/ZD256_REDEFINE_TEST,/sap/bc/adt/vit/wb/object_type/iwpr/object_name/ZD256_REDEFINE_TEST,
+/sap/bc/adt/ddic/structures/zd256_s_customer,TABL/DS,ZD256_S_CUSTOMER,ZD256_DEMO,Structure,TABL/DS,ZD256_S_CUSTOMER,ZD256_S_CUSTOMER,/sap/bc/adt/ddic/structures/zd256_s_customer,/sap/bc/adt/vit/wb/object_type/tablds/object_name/ZD256_S_CUSTOMER,
+/sap/bc/adt/vit/wb/object_type/ttypda/object_name/ZD256_TT_CUSTOMER,TTYP/DA,ZD256_TT_CUSTOMER,ZD256_DEMO,Table Type,TTYP/DA,ZD256_TT_CUSTOMER,ZD256_TT_CUSTOMER,/sap/bc/adt/vit/wb/object_type/ttypda/object_name/ZD256_TT_CUSTOMER,/sap/bc/adt/vit/wb/object_type/ttypda/object_name/ZD256_TT_CUSTOMER,
