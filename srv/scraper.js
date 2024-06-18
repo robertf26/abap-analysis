@@ -1,151 +1,169 @@
 const axios = require('axios');
 const xml2js = require('xml2js');
 const { createObjectCsvWriter } = require('csv-writer');
+const winston = require('winston');
+const { queue } = require('async');
+const { performance } = require('perf_hooks');
+const fs = require('fs');
 
-// Basis-URL
+// Logging setup
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.printf(info => `${info.timestamp} - ${info.level}: ${info.message}`)
+    ),
+    transports: [
+        new winston.transports.File({ filename: 'scraper.log' })
+    ]
+});
+
 const base_url = "http://TUM_I01_ADT.dest";
+const processedPackages = new Set();
+const concurrency = 60; // Increased concurrency
 
-// Funktion zum Holen des CSRF Tokens
+// Create an axios instance with HTTP keep-alive
+const axiosInstance = axios.create({
+    httpAgent: new (require('http').Agent)({ keepAlive: true }),
+    httpsAgent: new (require('https').Agent)({ keepAlive: true })
+});
+
+const taskQueue = queue(async (task, callback) => {
+    await processPackage(task.packageName, task.csrfToken, task.cookies);
+    callback();
+}, concurrency);
+
+taskQueue.drain = function() {
+    logger.info('All items have been processed.');
+};
+
+taskQueue.error = function(error, task) {
+    logger.error(`Task experienced an error while processing: ${task.packageName} - ${error}`);
+};
+
 async function getCsrfToken() {
+    logger.info("Fetching CSRF token and cookies...");
     const url = `${base_url}/sap/bc/adt/discovery`;
     const headers = { "X-CSRF-Token": "fetch" };
-    console.log(`Requesting CSRF token from ${url}`);
-    const response = await axios.get(url, { headers });
-    console.log(`CSRF token received: ${response.headers['x-csrf-token']}`);
-    return {
-        csrfToken: response.headers['x-csrf-token'],
-        cookies: response.headers['set-cookie']
-    };
+    const response = await axiosInstance.get(url, { headers });
+    logger.info("CSRF token and cookies retrieved.");
+    return { csrfToken: response.headers['x-csrf-token'], cookies: response.headers['set-cookie'] };
 }
 
-// Funktion zur Durchführung einer Suche
-async function searchObjects(query, csrfToken, cookies) {
-    const url = `${base_url}/sap/bc/adt/repository/informationsystem/search?operation=SEARCH_GENERIC&query=${query}`;
-    const headers = { "X-CSRF-Token": csrfToken, "Cookie": cookies.join(';') };
-    console.log(`Searching objects with query: ${query}`);
-    const response = await axios.get(url, { headers });
-    console.log(`Search completed with status: ${response.status}`);
-    return response.data;
-}
-
-// Funktion zum Abrufen der Paketstruktur
 async function getPackageStructure(packageName, csrfToken, cookies) {
-    const url = `${base_url}/sap/bc/adt/repository/nodestructure?parent_name=${packageName}`;
-    const headers = { "X-CSRF-Token": csrfToken, "X-SAP-ADT-SessionType": "Stateless", "Cookie": cookies.join(';') };
-    console.log(`Retrieving package structure for: ${packageName}`);
-    const response = await axios.post(url, {}, { headers });
-    console.log(`Package structure retrieval completed with status: ${response.status}`);
-    return response.data;
+    const url = packageName
+        ? `${base_url}/sap/bc/adt/repository/nodestructure?parent_name=${packageName}`
+        : `${base_url}/sap/bc/adt/repository/nodestructure`;
+    const headers = { "X-CSRF-Token": csrfToken, "Cookie": cookies.join(';') };
+    logger.info(`Fetching structure for package: ${packageName}`);
+    return retry(async () => {
+        const response = await axiosInstance.post(url, {}, { headers, timeout: 10000 }); // 10 seconds timeout
+        logger.info(`Structure retrieved for package: ${packageName}`);
+        return response;
+    }, 3); // Retry up to 3 times
 }
 
-// Funktion zum Parsen der XML-Antwort
-async function parseXml(xmlContent) {
+//OBJECT_TYPE,OBJECT_NAME,TECH_NAME,OBJECT_URI,OBJECT_VIT_URI,EXPANDABLE
+async function processPackage(packageName, csrfToken, cookies) {
+    if (processedPackages.has(packageName)) {
+        logger.info(`Skipping already processed package: ${packageName}`);
+        return;
+    }
+    processedPackages.add(packageName);
+    logger.info(`Starting to process package: ${packageName}`);
+
+    const startTime = performance.now();
+
     try {
-        const parser = new xml2js.Parser();
-        console.log("Parsing XML content");
-        const result = await parser.parseStringPromise(xmlContent);
-        console.log("XML parsing completed");
-        return result;
-    } catch (e) {
-        console.error("Error parsing XML:", e);
-        return null;
-    }
-}
+        const response = await getPackageStructure(packageName, csrfToken, cookies);
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const packageTree = await parser.parseStringPromise(response.data);
 
-// Funktion zum Speichern von Daten in CSV
-async function saveToCsv(data, filename) {
-    if (data.length) {
-        const csvWriter = createObjectCsvWriter({
-            path: filename,
-            header: Object.keys(data[0]).map(key => ({id: key, title: key}))
+        const packages = packageTree['asx:abap']['asx:values']['DATA']['TREE_CONTENT']['SEU_ADT_REPOSITORY_OBJ_NODE'];
+        let packageDetails = Array.isArray(packages) ? packages : [packages];
+
+        // Filter package details based on OBJECT_NAME starting with 'Z' or '/ISV'
+        const filteredPackageDetails = packageDetails.filter(pkg => /^Z|\/ISV/.test(pkg.OBJECT_NAME));
+
+        logger.info(`Processing ${filteredPackageDetails.length} filtered items in package: ${packageName}`);
+        await appendToCsv(filteredPackageDetails, "packages.csv");
+
+        // Commented out to stop processing sub-packages
+        /*
+        filteredPackageDetails.forEach(pkg => {
+            if (pkg.EXPANDABLE === 'X' && !processedPackages.has(pkg.OBJECT_NAME)) {
+                logger.info(`Queueing sub-package: ${pkg.OBJECT_NAME}`);
+                taskQueue.push({ packageName: pkg.OBJECT_NAME, csrfToken, cookies });
+            }
         });
-        console.log(`Saving data to CSV file: ${filename}`);
+        */
+    } catch (error) {
+        logger.error(`Failed to process package ${packageName}: ${error.message}`);
+    }
+
+    const endTime = performance.now();
+    logger.info(`Finished processing package: ${packageName} in ${endTime - startTime} ms`);
+}
+
+async function appendToCsv(data, filename) {
+    if (data.length === 0) {
+        logger.info(`No data to append for ${filename}`);
+        return;
+    }
+    logger.info(`Appending ${data.length} records to ${filename}`);
+
+    // Check if file exists and write header if not
+    const fileExists = fs.existsSync(filename);
+    const headers = [
+        { id: 'OBJECT_TYPE', title: 'OBJECT_TYPE' },
+        { id: 'OBJECT_NAME', title: 'OBJECT_NAME' },
+        { id: 'TECH_NAME', title: 'TECH_NAME' },
+        { id: 'OBJECT_URI', title: 'OBJECT_URI' },
+        { id: 'OBJECT_VIT_URI', title: 'OBJECT_VIT_URI' },
+        { id: 'EXPANDABLE', title: 'EXPANDABLE' }
+    ];
+
+    // Create CSV writer with dynamic headers
+    const csvWriter = createObjectCsvWriter({
+        path: filename,
+        header: headers,
+        append: true // Always append to the file
+    });
+
+    try {
+        // If file does not exist, write header first
+        if (!fileExists) {
+            logger.info(`File ${filename} does not exist. Creating file with header.`);
+            await fs.promises.writeFile(filename, headers.map(header => header.title).join(',') + '\n');
+        }
         await csvWriter.writeRecords(data);
-        console.log("Data successfully saved to CSV");
-    } else {
-        console.log("No data to save to CSV");
+        logger.info(`Data appended to ${filename}`);
+    } catch (error) {
+        logger.error(`Failed to append data to ${filename}: ${error.message}`);
     }
 }
 
-// Hauptfunktion
+async function retry(fn, retries) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            return await fn();
+        } catch (error) {
+            if (i === retries - 1) {
+                throw error;
+            }
+            logger.warn(`Retrying after error: ${error.message}`);
+        }
+    }
+}
+
 async function main() {
     try {
-        console.log("Starting scraper...");
+        logger.info("Starting main process...");
         const { csrfToken, cookies } = await getCsrfToken();
-        console.log("CSRF token and cookies obtained");
-
-        const searchResponse = await searchObjects("ZD256*", csrfToken, cookies);
-        console.log("Search objects response received");
-
-        const searchTree = await parseXml(searchResponse);
-        if (!searchTree) {
-            console.log("No search results found");
-            return;
-        }
-        console.log("Search results parsed");
-        console.log(JSON.stringify(searchTree, null, 2));
-
-        // Überprüfen Sie die Struktur von searchTree
-        if (!searchTree['adtcore:objectReferences'] || !searchTree['adtcore:objectReferences']['adtcore:objectReference']) {
-            console.error("searchTree['adtcore:objectReferences']['adtcore:objectReference'] is undefined");
-            return;
-        }
-
-        // Hier müssen Sie die spezifische Struktur Ihrer XML-Daten anpassen
-        const objects = searchTree['adtcore:objectReferences']['adtcore:objectReference'].map(el => ({
-            uri: el.$['adtcore:uri'],
-            type: el.$['adtcore:type'],
-            name: el.$['adtcore:name'],
-            packageName: el.$['adtcore:packageName'],
-            description: el.$['adtcore:description']
-        }));
-        console.log(`Found ${objects.length} objects`);
-
-        const packageName = "ZD256_DEMO";
-        const packageResponse = await getPackageStructure(packageName, csrfToken, cookies);
-        console.log("Package structure response received");
-
-        const packageTree = await parseXml(packageResponse);
-        if (!packageTree) {
-            console.log("No package structure found");
-            return;
-        }
-        console.log("Package structure parsed");
-        console.log(JSON.stringify(packageTree, null, 2));
-
-        // Überprüfen Sie die Struktur von packageTree
-        if (!packageTree['asx:abap'] || !packageTree['asx:abap']['asx:values'] || !packageTree['asx:abap']['asx:values'][0]['DATA'] || !packageTree['asx:abap']['asx:values'][0]['DATA'][0]['TREE_CONTENT'] || !packageTree['asx:abap']['asx:values'][0]['DATA'][0]['TREE_CONTENT'][0]['SEU_ADT_REPOSITORY_OBJ_NODE']) {
-            console.error("packageTree structure is undefined");
-            return;
-        }
-
-        // Spezifische Struktur Ihrer XML-Daten anpassen
-        const packageDetails = packageTree['asx:abap']['asx:values'][0]['DATA'][0]['TREE_CONTENT'][0]['SEU_ADT_REPOSITORY_OBJ_NODE'].map(el => ({
-            OBJECT_TYPE: el.OBJECT_TYPE[0],
-            OBJECT_NAME: el.OBJECT_NAME[0],
-            TECH_NAME: el.TECH_NAME[0],
-            OBJECT_URI: el.OBJECT_URI[0],
-            OBJECT_VIT_URI: el.OBJECT_VIT_URI[0],
-            EXPANDABLE: el.EXPANDABLE[0]
-        }));
-        console.log(`Found ${packageDetails.length} package details`);
-
-        const combinedData = objects.map(obj => ({
-            ...obj,
-            ...packageDetails.find(pkg => pkg.OBJECT_NAME === obj.name)
-        }));
-        console.log("Data combined");
-
-        await saveToCsv(combinedData, "abap_objects.csv");
-        console.log("Scraper finished successfully");
+        taskQueue.push({ packageName: "", csrfToken, cookies }); // Start with the root package
     } catch (error) {
-        console.error("Error in main function:", error);
+        logger.error(`Error starting main process: ${error.message}`);
     }
 }
 
-// Führen Sie das Skript aus, wenn es direkt ausgeführt wird
-if (require.main === module) {
-    main();
-}
-//test
-module.exports = { main };
+main().catch(error => logger.error(`Error in main: ${error.message}`));
