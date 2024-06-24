@@ -55,8 +55,7 @@ entity Classes : cuid {
   modeled : Boolean;
   fixPointArithmetic : Boolean;
   activeUnicodeCheck : Boolean;
-  sourceCode : LargeString; //Welchen Datentyp sollte man hier verwenden?
-
+  sourceCode : LargeString;
   name : String not null  @mandatory;
   type : String;
   responsible : String;
@@ -80,7 +79,7 @@ entity Programs : cuid {
   fixPointArithmetic : Boolean;
   activeUnicodeCheck : Boolean;
   descriptionTextLimit : Int16;
-  sourceCode : String; //Welchen Datentyp sollte man hier verwenden?
+  sourceCode : LargeString;
   
   name : String not null  @mandatory;
   type : String;

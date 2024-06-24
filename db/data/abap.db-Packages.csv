@@ -1,11 +1,2 @@
-ID,techName,name,type,responsible,masterLanguage,masterSystem,description,version,changedAt,changedBy,createdAt,createdBy,parent
-cljhs5dz7000001,AuthModule,Authentication Module,Module,John Doe,Python,MainSystem,Handles user authentication,1.2,2024-06-10,Jane Smith,2023-05-01,John Doe,
-cljhs5dz7000002,UserProfile,User Profile Management,Module,Sarah Connor,Java,MainSystem,Manages user profiles,2.0,2024-04-12,John Doe,2023-06-15,Sarah Connor,
-cljhs5dz7000003,PaymentGateway,Payment Gateway Integration,Service,Alex Johnson,JavaScript,PaymentSystem,Integrates various payment gateways,1.5,2024-05-18,Alex Johnson,2023-07-20,Alex Johnson,
-cljhs5dz7000004,NotificationService,Notification Service,Service,Emily Davis,Go,NotificationSystem,Sends notifications to users,3.1,2024-03-25,Jane Smith,2023-08-30,Emily Davis,
-cljhs5dz7000005,LoggingModule,Logging Module,Module,Michael Brown,Python,LoggingSystem,Logs all system activities,2.3,2024-02-20,Michael Brown,2023-09-10,Michael Brown,cljhs5dz7000001
-cljhs5dz7000006,DataSync,Data Synchronization,Service,Amy Williams,Ruby,SyncSystem,Syncs data across systems,1.7,2024-01-15,Amy Williams,2023-10-05,Amy Williams,
-cljhs5dz7000007,ReportGenerator,Report Generator,Tool,Robert Wilson,PHP,ReportingSystem,Generates system reports,2.5,2024-06-01,Robert Wilson,2023-11-22,Robert Wilson,
-cljhs5dz7000008,SearchEngine,Search Engine,Module,Jessica Thompson,Elixir,SearchSystem,Handles search functionalities,3.0,2024-04-30,Jessica Thompson,2023-12-01,Jessica Thompson,cljhs5dz7000002
-cljhs5dz7000009,BackupService,Backup Service,Service,Brian Lee,Bash,BackupSystem,Manages system backups,1.9,2024-06-05,Brian Lee,2024-01-10,Brian Lee,cljhs5dz7000003
-cljhs5dz700000a,APIManager,API Manager,Tool,Laura White,TypeScript,APISystem,Manages APIs,2.2,2024-06-08,Laura White,2024-02-15,Laura White,cljhs5dz7000004
+ID,techName,name,type,responsible,masterLanguage,masterSystem,description,version,changedAt,changedBy,createdAt,createdBy,parent_ID
+9a56b6e5-3d3e-4e75-9d3d-9bb5d85c9e56,Tech001,System Alpha,Software,John Doe,Python,System X,Initial version of System Alpha,1.0,2024-06-01,Jane Smith,2024-01-15,John Doe,

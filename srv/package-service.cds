@@ -32,7 +32,7 @@ service PackageService {
         *, 
         1 as count: Integer
     };
-    entity Objects as projection on db.Objects;
-    entity Classes as projection on db.Classes;
-    entity Programs as projection on db.Programs;
+    //entity Objects as projection on db.Objects;
+    //entity Classes as projection on db.Classes;
+    //entity Programs as projection on db.Programs;
 }
