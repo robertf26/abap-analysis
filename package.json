@@ -7,9 +7,16 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^7",
-    "express": "^4",
+    "@sap/cds-hana": "^2",
     "@sap/xssec": "^3",
-    "@sap/cds-hana": "^2"
+    "axios": "^0.21.4",
+    "csv-writer": "^1.6.0",
+    "express": "^4",
+    "fs": "^0.0.1-security",
+    "performance": "^1.4.0",
+    "queue": "^7.0.0",
+    "winston": "^3.13.0",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
