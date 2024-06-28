@@ -19,18 +19,32 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "@cap-js/sqlite": "^1",
+    "@cap-js/sqlite": "^1.7.1",
     "@sap/cds-dk": "^7",
     "@sap/eslint-plugin-cds": "^3",
+    "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
+    "@sap/ux-specification": "^1.120.12",
+    "@sapui5/ts-types": "^1.92.2",
     "eslint": "^9"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "watch-dashboard": "cds watch --open dashboard/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
-      "auth": "xsuaa",
-      "db": "hana"
+      "auth": "mocked",
+      "[hybrid]": {
+        "db": "hana",
+        "auth": "mocked"
+      },
+      "[production]": {
+        "db": "hana",
+        "auth": "xsuaa"
+      }
     }
-  }
+  },
+  "sapux": [
+    "app/dashboard"
+  ]
 }
