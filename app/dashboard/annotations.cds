@@ -28,6 +28,10 @@ annotate service.Packages with @(
         },
     ],
 
+    UI.SelectionFields :[
+        name, techName
+    ],
+
 
     Analytics.AggregatedProperty #numberofPackages: {
         Name                : 'NumberPackages',
@@ -41,13 +45,13 @@ annotate service.Packages with @(
         Title              : 'Packages Chart',
         ChartType          : #Column,
         DynamicMeasures    : ['@Analytics.AggregatedProperty#numberofPackages', ],
-        Dimensions         : [masterLanguage],
+        Dimensions         : ['masterLanguage'],
         MeasureAttributes  : [{
             DynamicMeasure: '@Analytics.AggregatedProperty#numberofPackages',
             Role          : #Axis1
         }],
         DimensionAttributes: [{
-            Dimension: masterLanguage,
+            Dimension: 'masterLanguage',
             Role     : #Category
         }, ]
     },

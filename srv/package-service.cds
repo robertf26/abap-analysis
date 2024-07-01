@@ -19,10 +19,11 @@ service PackageService {
                 'skip'
             ],
             GroupableProperties   : [
-                'masterLanguage'
+                'masterLanguage', 'name', 'techName'
             ],
             AggregatableProperties: [
-                {Property: count}
+                {Property: count},
+                {Property: ID}
             ]
         }},
         Common.SemanticKey: [ID]

@@ -12,7 +12,7 @@ entity Packages : cuid {
   name : String not null  @mandatory;
   type : String;
   responsible : String;
-  masterLanguage : String;
+  masterLanguage : String @title : 'Master Language';
   masterSystem : String;
   description : String;
   version : String;
