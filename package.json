@@ -26,7 +26,6 @@
   },
   "cds": {
     "requires": {
-      "auth": "mocked",
       "[hybrid]": {
         "db": "hana",
         "auth": "mocked"

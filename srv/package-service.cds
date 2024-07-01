@@ -1,7 +1,6 @@
 using abap.db as db from '../db/data-model';
 
 service PackageService {
-
     @readonly
     @(
         Aggregation       : {ApplySupported: {
