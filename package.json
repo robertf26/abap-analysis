@@ -17,6 +17,7 @@
     "fs": "^0.0.1-security",
     "performance": "^1.4.0",
     "queue": "^7.0.0",
+    "uuid": "^10.0.0",
     "winston": "^3.13.0",
     "xml2js": "^0.4.23"
   },
