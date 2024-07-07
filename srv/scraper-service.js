@@ -162,21 +162,15 @@ async function getPackage(packageName, csrfToken, cookies) {
 
 // OBJECT_TYPE, OBJECT_NAME, TECH_NAME, OBJECT_URI, OBJECT_VIT_URI, EXPANDABLE
 async function processPackage(packageName, csrfToken, cookies, parentId = null) {
-    // Handle the root package explicitly if no package name is provided
     const isRootPackage = !packageName;
-
-    if (!packageName && !isRootPackage) {
-        logger.warn('Empty package name received, skipping.');
-        return;
-    }
-
     const packageIdentifier = isRootPackage ? 'Root' : packageName;
-    const packageId = isRootPackage ? uuidv4() : packageName; // Use package name as ID for non-root packages
-
+    
     if (processedPackages.has(packageIdentifier)) {
         logger.info(`Skipping already processed package: ${packageIdentifier}`);
         return;
     }
+    
+    const packageId = uuidv4(); // Generate a new UUID for each package
     processedPackages.set(packageIdentifier, packageId);
     logger.info(`Starting to process package: ${packageIdentifier}`);
 
@@ -190,7 +184,6 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
         const packages = packageTree['asx:abap']['asx:values']['DATA']['TREE_CONTENT']['SEU_ADT_REPOSITORY_OBJ_NODE'];
         let packageDetails = Array.isArray(packages) ? packages : [packages];
 
-        // Filter package details based on OBJECT_NAME starting with 'Z' or '/ISV'
         const filteredPackageDetails = packageDetails.filter(pkg => /^Z|\/ISV/.test(pkg.OBJECT_NAME));
         
         logger.info(`Processing ${filteredPackageDetails.length} filtered items in package: ${packageIdentifier}`);
@@ -200,11 +193,9 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
                 const packageDetails = await getPackage(pkg.OBJECT_NAME, csrfToken, cookies);
                 const parsedDetails = await parser.parseStringPromise(packageDetails.data);
                 const packageInfo = parsedDetails['adtcore:mainObject'].$;
-                const childPackageId = uuidv4(); // Generate a unique ID for each child package
-
 
                 const packageRecord = {
-                    ID: isRootPackage ? packageId : childPackageId,
+                    ID: packageId,
                     techName: packageInfo['adtcore:techName'] || pkg.TECH_NAME || '',
                     name: packageInfo['adtcore:name'] || '',
                     type: packageInfo['adtcore:type'] || pkg.OBJECT_TYPE || '',
@@ -218,16 +209,16 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
                     changedBy: packageInfo['adtcore:changedBy'] || '',
                     createdAt: packageInfo['adtcore:createdAt'] || '',
                     createdBy: packageInfo['adtcore:createdBy'] || '',
-                    parent_ID: isRootPackage ? '' : packageId
+                    parent_ID: parentId || ''
                 };
                 
                 await appendToCSV([packageRecord], 'packages');
 
                 // Add child packages to the queue with the current package as their parent
-                taskQueue.push({ packageName: pkg.OBJECT_NAME, csrfToken, cookies, parentId: childPackageId });
+                taskQueue.push({ packageName: pkg.OBJECT_NAME, csrfToken, cookies, parentId: packageId });
 
                 // Fetch and process objects (classes, programs, others) for this package
-                await processPackageObjects(pkg.OBJECT_NAME, csrfToken, cookies, childPackageId);
+                await processPackageObjects(pkg.OBJECT_NAME, csrfToken, cookies, packageId);
             } catch (error) {
                 logger.error(`Failed to fetch details for package ${pkg.OBJECT_NAME}: ${error.message}`);
             }
@@ -262,7 +253,7 @@ async function processPackageObjects(packageName, csrfToken, cookies, parentId) 
                 const classSource = classSourceResponse.data;
 
                 const classRecord = {
-                    ID: `${parentId}_${cls.OBJECT_NAME}`,
+                    ID: uuidv4(),
                     final: classInfo['class:final'] || '',
                     abstract: classInfo['class:abstract'] || '',
                     visibility: classInfo['class:visibility'] || '',
@@ -303,7 +294,7 @@ async function processPackageObjects(packageName, csrfToken, cookies, parentId) 
                 const programInfo = parsedProgramDetails['program:abapProgram'].$;
 
                 const programRecord = {
-                    ID: `${parentId}_${prog.OBJECT_NAME}`,
+                    ID: uuidv4(),
                     lockedByEditor: programInfo['program:lockedByEditor'] || '',
                     programType: programInfo['program:programType'] || '',
                     sourceObjectStatus: programInfo['abapsource:sourceObjectStatus'] || '',
@@ -343,7 +334,7 @@ async function processPackageObjects(packageName, csrfToken, cookies, parentId) 
                 const otherObjectInfo = parsedOtherObjectDetails['adtcore:mainObject'].$;
 
                 const otherObjectRecord = {
-                    ID: `${parentId}_${otherObj.OBJECT_NAME}`,
+                    ID: uuidv4(),
                     name: otherObjectInfo['adtcore:name'] || '',
                     type: otherObjectInfo['adtcore:type'] || otherObj.OBJECT_TYPE || '',
                     responsible: otherObjectInfo['adtcore:responsible'] || '',
