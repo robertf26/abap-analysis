@@ -170,8 +170,6 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
         return;
     }
     
-    const packageId = uuidv4(); // Generate a new UUID for each package
-    processedPackages.set(packageIdentifier, packageId);
     logger.info(`Starting to process package: ${packageIdentifier}`);
 
     const startTime = performance.now();
@@ -190,6 +188,8 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
 
         for (const pkg of filteredPackageDetails) {
             try {
+                const packageId = uuidv4(); // Generate a new UUID for each package
+                processedPackages.set(pkg.OBJECT_NAME, packageId);
                 const packageDetails = await getPackage(pkg.OBJECT_NAME, csrfToken, cookies);
                 const parsedDetails = await parser.parseStringPromise(packageDetails.data);
                 const packageInfo = parsedDetails['adtcore:mainObject'].$;
