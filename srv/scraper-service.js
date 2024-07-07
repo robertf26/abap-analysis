@@ -171,7 +171,7 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
     }
 
     const packageIdentifier = isRootPackage ? 'Root' : packageName;
-    const packageId = uuidv4(); // Generate a UUID for this package
+    const packageId = isRootPackage ? uuidv4() : packageName; // Use package name as ID for non-root packages
 
     if (processedPackages.has(packageIdentifier)) {
         logger.info(`Skipping already processed package: ${packageIdentifier}`);
@@ -200,9 +200,11 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
                 const packageDetails = await getPackage(pkg.OBJECT_NAME, csrfToken, cookies);
                 const parsedDetails = await parser.parseStringPromise(packageDetails.data);
                 const packageInfo = parsedDetails['adtcore:mainObject'].$;
+                const childPackageId = uuidv4(); // Generate a unique ID for each child package
+
 
                 const packageRecord = {
-                    ID: packageId,
+                    ID: isRootPackage ? packageId : childPackageId,
                     techName: packageInfo['adtcore:techName'] || pkg.TECH_NAME || '',
                     name: packageInfo['adtcore:name'] || '',
                     type: packageInfo['adtcore:type'] || pkg.OBJECT_TYPE || '',
@@ -216,16 +218,16 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
                     changedBy: packageInfo['adtcore:changedBy'] || '',
                     createdAt: packageInfo['adtcore:createdAt'] || '',
                     createdBy: packageInfo['adtcore:createdBy'] || '',
-                    parent_ID: parentId || ''
+                    parent_ID: isRootPackage ? '' : packageId
                 };
                 
                 await appendToCSV([packageRecord], 'packages');
 
                 // Add child packages to the queue with the current package as their parent
-                taskQueue.push({ packageName: pkg.OBJECT_NAME, csrfToken, cookies, parentId: packageId });
+                taskQueue.push({ packageName: pkg.OBJECT_NAME, csrfToken, cookies, parentId: childPackageId });
 
                 // Fetch and process objects (classes, programs, others) for this package
-                await processPackageObjects(pkg.OBJECT_NAME, csrfToken, cookies, packageId);
+                await processPackageObjects(pkg.OBJECT_NAME, csrfToken, cookies, childPackageId);
             } catch (error) {
                 logger.error(`Failed to fetch details for package ${pkg.OBJECT_NAME}: ${error.message}`);
             }
@@ -260,7 +262,7 @@ async function processPackageObjects(packageName, csrfToken, cookies, parentId) 
                 const classSource = classSourceResponse.data;
 
                 const classRecord = {
-                    ID: uuidv4(),
+                    ID: `${parentId}_${cls.OBJECT_NAME}`,
                     final: classInfo['class:final'] || '',
                     abstract: classInfo['class:abstract'] || '',
                     visibility: classInfo['class:visibility'] || '',
@@ -301,7 +303,7 @@ async function processPackageObjects(packageName, csrfToken, cookies, parentId) 
                 const programInfo = parsedProgramDetails['program:abapProgram'].$;
 
                 const programRecord = {
-                    ID: uuidv4(),
+                    ID: `${parentId}_${prog.OBJECT_NAME}`,
                     lockedByEditor: programInfo['program:lockedByEditor'] || '',
                     programType: programInfo['program:programType'] || '',
                     sourceObjectStatus: programInfo['abapsource:sourceObjectStatus'] || '',
@@ -341,7 +343,7 @@ async function processPackageObjects(packageName, csrfToken, cookies, parentId) 
                 const otherObjectInfo = parsedOtherObjectDetails['adtcore:mainObject'].$;
 
                 const otherObjectRecord = {
-                    ID: uuidv4(),
+                    ID: `${parentId}_${otherObj.OBJECT_NAME}`,
                     name: otherObjectInfo['adtcore:name'] || '',
                     type: otherObjectInfo['adtcore:type'] || otherObj.OBJECT_TYPE || '',
                     responsible: otherObjectInfo['adtcore:responsible'] || '',
