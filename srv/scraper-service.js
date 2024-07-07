@@ -161,7 +161,7 @@ async function getPackage(packageName, csrfToken, cookies) {
 }
 
 // OBJECT_TYPE, OBJECT_NAME, TECH_NAME, OBJECT_URI, OBJECT_VIT_URI, EXPANDABLE
-async function processPackage(packageName, csrfToken, cookies, parentId = null) {
+async function processPackage(packageName, csrfToken, cookies, parentId) {
     const isRootPackage = !packageName;
     const packageIdentifier = isRootPackage ? 'Root' : packageName;
     
@@ -190,6 +190,7 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
             try {
                 const packageId = uuidv4(); // Generate a new UUID for each package
                 processedPackages.set(pkg.OBJECT_NAME, packageId);
+
                 const packageDetails = await getPackage(pkg.OBJECT_NAME, csrfToken, cookies);
                 const parsedDetails = await parser.parseStringPromise(packageDetails.data);
                 const packageInfo = parsedDetails['adtcore:mainObject'].$;
@@ -209,7 +210,7 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
                     changedBy: packageInfo['adtcore:changedBy'] || '',
                     createdAt: packageInfo['adtcore:createdAt'] || '',
                     createdBy: packageInfo['adtcore:createdBy'] || '',
-                    parent_ID: parentId || ''
+                    parent_ID: parentId
                 };
                 
                 await appendToCSV([packageRecord], 'packages');
@@ -490,7 +491,30 @@ async function main() {
     try {
         logger.info("Starting main process...");
         const { csrfToken, cookies } = await getCsrfToken();
-        taskQueue.push({ packageName: null, csrfToken, cookies, parentId: null }); // Start with the root package
+        const rootPackageId = uuidv4(); // Generate a UUID for the root package
+        
+        // Create a root package record
+        const rootPackageRecord = {
+            ID: rootPackageId,
+            techName: 'ROOT',
+            name: 'ROOT',
+            type: 'DEVC/K',
+            responsible: '',
+            masterLanguage: '',
+            masterSystem: '',
+            description: 'Root Package',
+            version: '',
+            changedAt: '',
+            changedBy: '',
+            createdAt: '',
+            createdBy: '',
+            parent_ID: ''
+        };
+        
+        await appendToCSV([rootPackageRecord], 'packages');
+        
+        // Start with the root package, passing its ID as the parent for top-level packages
+        taskQueue.push({ packageName: null, csrfToken, cookies, parentId: rootPackageId });
     } catch (error) {
         logger.error(`Error starting main process: ${error.message}`);
     }
