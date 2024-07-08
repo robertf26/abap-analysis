@@ -16,13 +16,19 @@
     "@sap/cds-dk": "^7",
     "@sap/eslint-plugin-cds": "^3",
     "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
-    "@sap/ux-specification": "^1.120.12",
+    "@sap/ux-specification": "^1.120.14",
     "@sapui5/ts-types": "^1.92.2",
-    "eslint": "^9"
+    "eslint": "^7.32.0",
+    "rimraf": "^5.0.5"
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-dashboard": "cds watch --open dashboard/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-dashboard": "cds watch --open dashboard/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-dashboard2": "cds watch --open dashboard2/webapp/index.html?sap-ui-xx-viewCache=false",
+    "undeploy": "cf undeploy abap-analysis --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-dashboard3": "cds watch --open dashboard3/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -37,6 +43,8 @@
     }
   },
   "sapux": [
-    "app/dashboard"
+    "app/dashboard",
+    "app/dashboard2",
+    "app/dashboard3"
   ]
 }
