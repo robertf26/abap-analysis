@@ -24,8 +24,8 @@ entity Packages : cuid {
   parent : Association to Packages;
   childrenPackages : Association to many Packages on childrenPackages.parent = $self;
   childrenObjects: Association to many Objects on childrenObjects.parent = $self;
-  childrenClasses: Association to many Objects on childrenClasses.parent = $self;
-  childrenPrograms: Association to many Objects on childrenPrograms.parent = $self;
+  childrenClasses: Association to many Classes on childrenClasses.parent = $self;
+  childrenPrograms: Association to many Programs on childrenPrograms.parent = $self;
 }
 
 entity Objects : cuid {

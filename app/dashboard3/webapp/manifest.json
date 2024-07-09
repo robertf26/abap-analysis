@@ -36,6 +36,12 @@
             "additionalParameters": "allowed"
           }
         }
+      },
+      "outbounds": {
+        "PackageDetails": {
+          "semanticObject": "Packages",
+          "action": "View"
+        }
       }
     }
   },
@@ -159,7 +165,14 @@
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/Packages"
+              "contextPath": "/Packages",
+              "navigation": {
+                "childrenPackages": {
+                  "detail": {
+                    "outbound": "PackageDetails"
+                  }
+                }
+              }
             }
           }
         }

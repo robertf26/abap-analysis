@@ -1,7 +1,7 @@
 ID,techName,name,type,responsible,masterLanguage,masterSystem,description,version,changedAt,changedBy,createdAt,createdBy,parent_ID
 f1b48173-996b-4baf-82b0-d60c6a5fb2cd,ROOT,ROOT,DEVC/K,,,,Root Package,,,,,,
 79b0e935-ed9d-4f3b-8944-f6debf03c8c1,Z001,Z001,DEVC/K,SAP,,SAP,Customer development class,active,,SAP,,SAP,f1b48173-996b-4baf-82b0-d60c6a5fb2cd
-418bae63-42d3-496d-af10-4f1904845605,Z230,Z230,DEVC/K,CURA,DE,EC3,Development Class for Demo System IRT230 Rel. 4.0,active,,,,,f1b48173-996b-4baf-82b0-d60c6a5fb2cd
+418bae63-42d3-496d-af10-4f1904845605,Z230,Z230,DEVC/K,CURA,DE,EC3,Development Class for Demo System IRT230 Rel. 4.0,active,,,,,79b0e935-ed9d-4f3b-8944-f6debf03c8c1
 091a88fd-c335-412e-881b-69b774ee7d1b,Z42390,Z42390,DEVC/K,I302690,EN,EC3,Z42390,active,2014-08-11T22:00:00Z,I302690,2014-08-11T22:00:00Z,I302690,f1b48173-996b-4baf-82b0-d60c6a5fb2cd
 06275f4d-aded-4b3d-8978-4fbd16dfee8d,Z4692,Z4692,DEVC/K,C5245479,EN,EC3,4692 - package,active,2016-10-23T22:00:00Z,C5245479,2016-10-23T22:00:00Z,C5245479,f1b48173-996b-4baf-82b0-d60c6a5fb2cd
 5d0340ee-7a5d-48dd-9864-45ad3da14ebf,Z5191063,Z5191063,DEVC/K,C5191063,EN,EC3,Z5191063,active,2014-06-09T22:00:00Z,C5191063,2014-06-09T22:00:00Z,C5191063,f1b48173-996b-4baf-82b0-d60c6a5fb2cd
