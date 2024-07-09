@@ -184,7 +184,8 @@ async function getPackage(packageName, csrfToken, cookies) {
 
 // OBJECT_TYPE, OBJECT_NAME, TECH_NAME, OBJECT_URI, OBJECT_VIT_URI, EXPANDABLE
 async function processPackage(packageName, csrfToken, cookies, parentId) {
-    const packageIdentifier = packageName || "Root";
+    const isRootPackage = !packageName;
+    const packageIdentifier = isRootPackage ? 'Root' : packageName;
 
     if (processedPackages.has(packageIdentifier)) {
         logger.info(`Skipping already processed package: ${packageIdentifier}`);
@@ -198,76 +199,56 @@ async function processPackage(packageName, csrfToken, cookies, parentId) {
         const response = await getPackageStructure(packageName, csrfToken, cookies);
         const parser = new xml2js.Parser({ explicitArray: false });
         const packageTree = await parser.parseStringPromise(response.data);
-        const packages =
-            packageTree["asx:abap"]["asx:values"]["DATA"]["TREE_CONTENT"][
-            "SEU_ADT_REPOSITORY_OBJ_NODE"
-            ];
+        const packages = packageTree['asx:abap']['asx:values']['DATA']['TREE_CONTENT']['SEU_ADT_REPOSITORY_OBJ_NODE'];
         let packageDetails = Array.isArray(packages) ? packages : [packages];
 
-        const filteredPackageDetails = packageDetails.filter((pkg) =>
-            /^Z|\/ISV/.test(pkg.OBJECT_NAME)
-        );
-
-        logger.info(
-            `Processing ${filteredPackageDetails.length} filtered items in package: ${packageIdentifier}`
-        );
+        const filteredPackageDetails = packageDetails.filter(pkg => /^Z|\/ISV/.test(pkg.OBJECT_NAME));
+        logger.info(`Processing ${filteredPackageDetails.length} filtered items in package: ${packageIdentifier}`);
 
         for (const pkg of filteredPackageDetails) {
-            const packageId = uuidv4();
-            processedPackages.set(pkg.OBJECT_NAME, packageId);
+            try {
+                const packageId = uuidv4();
+                processedPackages.set(pkg.OBJECT_NAME, packageId);
 
-            const packageDetails = await getPackage(
-                pkg.OBJECT_NAME,
-                csrfToken,
-                cookies
-            );
-            const parsedDetails = await parser.parseStringPromise(
-                packageDetails.data
-            );
-            const packageInfo = parsedDetails["adtcore:mainObject"].$;
+                const packageDetails = await getPackage(pkg.OBJECT_NAME, csrfToken, cookies);
+                const parsedDetails = await parser.parseStringPromise(packageDetails.data);
+                const packageInfo = parsedDetails['adtcore:mainObject'].$;
 
-            const packageRecord = {
-                ID: packageId,
-                techName: packageInfo["adtcore:techName"] || pkg.TECH_NAME || "",
-                name: packageInfo["adtcore:name"] || "",
-                type: packageInfo["adtcore:type"] || pkg.OBJECT_TYPE || "",
-                responsible: packageInfo["adtcore:responsible"] || "",
-                masterLanguage: packageInfo["adtcore:masterLanguage"] || "",
-                language: packageInfo["adtcore:language"] || "",
-                masterSystem: packageInfo["adtcore:masterSystem"] || "",
-                description: packageInfo["adtcore:description"] || "",
-                version: packageInfo["adtcore:version"] || "",
-                changedAt: packageInfo["adtcore:changedAt"] || "",
-                changedBy: packageInfo["adtcore:changedBy"] || "",
-                createdAt: packageInfo["adtcore:createdAt"] || "",
-                createdBy: packageInfo["adtcore:createdBy"] || "",
-                parent_ID: parentId,
-            };
+                const packageRecord = {
+                    ID: packageId,
+                    techName: packageInfo['adtcore:techName'] || pkg.TECH_NAME || '',
+                    name: packageInfo['adtcore:name'] || '',
+                    type: packageInfo['adtcore:type'] || pkg.OBJECT_TYPE || '',
+                    responsible: packageInfo['adtcore:responsible'] || '',
+                    masterLanguage: packageInfo['adtcore:masterLanguage'] || '',
+                    language: packageInfo['adtcore:language'] || '',
+                    masterSystem: packageInfo['adtcore:masterSystem'] || '',
+                    description: packageInfo['adtcore:description'] || '',
+                    version: packageInfo['adtcore:version'] || '',
+                    changedAt: packageInfo['adtcore:changedAt'] || '',
+                    changedBy: packageInfo['adtcore:changedBy'] || '',
+                    createdAt: packageInfo['adtcore:createdAt'] || '',
+                    createdBy: packageInfo['adtcore:createdBy'] || '',
+                    parent_ID: parentId
+                };
 
-            await appendToCSV([packageRecord], "packages");
+                await appendToCSV([packageRecord], 'packages');
 
-            // Process subpackages recursively
-            await processPackage(pkg.OBJECT_NAME, csrfToken, cookies, packageId);
+                // Process child packages
+                await processPackage(pkg.OBJECT_NAME, csrfToken, cookies, packageId);
 
-            // Process other objects in the package
-            await processPackageObjects(
-                pkg.OBJECT_NAME,
-                csrfToken,
-                cookies,
-                packageId
-            );
+                // Fetch and process objects (classes, programs, others) for this package
+                await processPackageObjects(pkg.OBJECT_NAME, csrfToken, cookies, packageId);
+            } catch (error) {
+                logger.error(`Failed to fetch details for package ${pkg.OBJECT_NAME}: ${error.message}`);
+            }
         }
     } catch (error) {
-        logger.error(
-            `Failed to process package ${packageIdentifier}: ${error.message}`
-        );
+        logger.error(`Failed to process package ${packageIdentifier}: ${error.message}`);
     }
 
     const endTime = performance.now();
-    logger.info(
-        `Finished processing package: ${packageIdentifier} in ${endTime - startTime
-        } ms`
-    );
+    logger.info(`Finished processing package: ${packageIdentifier} in ${endTime - startTime} ms`);
 }
 
 async function processPackageObjects(
@@ -590,32 +571,29 @@ async function main() {
         // Create a root package record
         const rootPackageRecord = {
             ID: rootPackageId,
-            techName: "ROOT",
-            name: "ROOT",
-            type: "DEVC/K",
-            responsible: "",
-            masterLanguage: "",
-            masterSystem: "",
-            description: "Root Package",
-            version: "",
-            changedAt: "",
-            changedBy: "",
-            createdAt: "",
-            createdBy: "",
-            parent_ID: "",
+            techName: 'ROOT',
+            name: 'ROOT',
+            type: 'DEVC/K',
+            responsible: '',
+            masterLanguage: '',
+            masterSystem: '',
+            description: 'Root Package',
+            version: '',
+            changedAt: '',
+            changedBy: '',
+            createdAt: '',
+            createdBy: '',
+            parent_ID: ''
         };
 
-        await appendToCSV([rootPackageRecord], "packages");
+        await appendToCSV([rootPackageRecord], 'packages');
 
-        // Start with the root package, passing its ID as the parent for top-level packages
-        taskQueue.push({
-            packageName: null,
-            csrfToken,
-            cookies,
-            parentId: rootPackageId,
-        });
+        // Start with the root package, passing null as the package name
+        await processPackage(null, csrfToken, cookies, rootPackageId);
+
+        logger.info("Main process completed successfully.");
     } catch (error) {
-        logger.error(`Error starting main process: ${error.message}`);
+        logger.error(`Error in main process: ${error.message}`);
     }
 }
 
