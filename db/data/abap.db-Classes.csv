@@ -1,1 +1,61 @@
 ID,final,abstract,visibility,category,sharedMemoryEnabled,modeled,fixPointArithmetic,activeUnicodeCheck,sourceCode,name,type,responsible,masterLanguage,masterSystem,description,version,changedAt,changedBy,createdAt,createdBy,parent_ID
+f473a715-2cdf-4898-a0c6-3ba3af548985,true,false,public,generalObjectType,false,false,true,true,"class Z001_CL_GOS_RECORD_HR definition
+  public
+  inheriting from CL_GOS_SERVICE
+  final
+  create public .
+
+*""* public components of class Z001_CL_GOS_RECORD_HR
+*""* do not include other source files here!!!
+public section.
+
+  methods EXECUTE
+    redefinition .
+protected section.
+*"" protected components of class CL_ARL_SRV_BARCODE
+*"" do not include other source files here!!!
+
+
+*"" methods
+methods:
+  CHECK_STATUS
+    redefinition .
+private section.
+*""* private components of class Z001_CL_GOS_RECORD_HR
+*""* do not include other source files here!!!
+
+  data RECORD type ref to Z001_CL_RECORD .
+ENDCLASS.
+
+
+
+CLASS Z001_CL_GOS_RECORD_HR IMPLEMENTATION.
+
+
+METHOD CHECK_STATUS .
+* ...
+  DATA lp_return TYPE saeprior.
+  data: cs_objtype TYPE toaom-sap_object,
+        pernr type string.
+**
+  ep_status = mp_status_inactive.
+  if gs_lporb-catid = 'BC'.
+    ep_status = mp_status_inactive.
+  else.
+    cs_objtype = gs_lporb-typeid.
+    if cs_objtype = 'PREL' or cs_objtype = 'BUS1065'.
+      pernr = gs_lporb-instid.
+      record = Z001_cl_record=>record_exists( pernr ).
+      if not record is initial.
+        ep_status = mp_status_active.
+      endif.
+    endif.
+  endif.
+
+ENDMETHOD.
+
+
+METHOD EXECUTE .
+  record->display( ).
+ENDMETHOD.
+ENDCLASS.",Z001_CL_GOS_RECORD_HR,CLAS/OC,WEISSANJA,DE,EC3,Dienst: Barcode erfassen,active,2005-07-15T19:02:08Z,WEISSANJA,2005-07-15T00:00:00Z,WEISSANJA,79b0e935-ed9d-4f3b-8944-f6debf03c8c1
