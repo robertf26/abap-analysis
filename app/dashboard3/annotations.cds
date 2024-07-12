@@ -40,8 +40,7 @@ annotate service.Packages with @(
 
     UI.SelectionFields                            : [
         name,
-        techName,
-        parent.name
+        techName
     ],
 
 

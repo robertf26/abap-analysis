@@ -19,7 +19,7 @@ service PackageService {
                 'skip'
             ],
             GroupableProperties   : [
-                'masterLanguage', 'name', 'techName', 'responsible', 'parent_ID'
+                'masterLanguage','responsible', 'parent_ID', 'masterSystem'
             ],
             AggregatableProperties: [
                 {Property: count},
