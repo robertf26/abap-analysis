@@ -56,6 +56,7 @@ entity Classes : cuid {
   fixPointArithmetic : Boolean;
   activeUnicodeCheck : Boolean;
   sourceCode : LargeString;
+  
   name : String not null  @mandatory;
   type : String;
   responsible : String;

@@ -141,6 +141,16 @@ annotate service.Objects with @(
             $Type: 'UI.DataField',
             Label: 'Type',
             Value: type,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Version',
+            Value: version,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Description',
+            Value: description,
         }
     ],
     UI.HeaderInfo       : {
@@ -160,6 +170,16 @@ annotate service.Programs with @(
             $Type: 'UI.DataField',
             Label: 'Type',
             Value: type,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Version',
+            Value: version,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Description',
+            Value: description,
         }
     ],
     UI.HeaderInfo        : {
@@ -179,6 +199,16 @@ annotate service.Classes with @(
             $Type: 'UI.DataField',
             Label: 'Type',
             Value: type,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Version',
+            Value: version,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Description',
+            Value: description,
         }
     ],
     UI.HeaderInfo       : {
@@ -202,6 +232,11 @@ annotate service.Packages with @(UI.LineItem #Packages: [
         $Type: 'UI.DataField',
         Label: 'Version',
         Value: version,
+    },
+    {
+        $Type: 'UI.DataField',
+        Label: 'Description',
+        Value: description,
     }
 ], );
 
@@ -242,8 +277,64 @@ annotate service.Classes with @(UI.FieldGroup #Classes: {
         },
         {
             $Type: 'UI.DataField',
+            Label: 'Type',
+            Value: type,
+        },
+        {
+            $Type: 'UI.DataField',
             Label: 'Description',
             Value: description,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'final',
+            Value: final,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'abstract',
+            Value: abstract,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'visibility',
+            Value: visibility,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'category',
+            Value: category,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'sharedMemoryEnabled',
+            Value: sharedMemoryEnabled,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'modeled',
+            Value: modeled,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'fixPointArithmetic',
+            Value: fixPointArithmetic,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'activeUnicodeCheck',
+            Value: activeUnicodeCheck,
+        },
+
+        {
+            $Type: 'UI.DataField',
+            Label: 'Master Language',
+            Value: masterLanguage,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Master System',
+            Value: masterSystem,
         },
         {
             $Type: 'UI.DataField',
@@ -257,8 +348,23 @@ annotate service.Classes with @(UI.FieldGroup #Classes: {
         },
         {
             $Type: 'UI.DataField',
-            Label: 'Master Languague',
-            Value: masterLanguage,
+            Label: 'Created At',
+            Value: createdAt,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Created by',
+            Value: createdBy,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Changed at',
+            Value: changedAt,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Changed by',
+            Value: changedBy,
         },
         {
             $Type: 'UI.DataField',
@@ -286,8 +392,23 @@ annotate service.Objects with @(UI.FieldGroup #Objects: {
         },
         {
             $Type: 'UI.DataField',
+            Label: 'Type',
+            Value: type,
+        },
+        {
+            $Type: 'UI.DataField',
             Label: 'Description',
             Value: description,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Master Language',
+            Value: masterLanguage,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Master System',
+            Value: masterSystem,
         },
         {
             $Type: 'UI.DataField',
@@ -298,7 +419,27 @@ annotate service.Objects with @(UI.FieldGroup #Objects: {
             $Type: 'UI.DataField',
             Label: 'Version',
             Value: version,
-        }
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Created At',
+            Value: createdAt,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Created by',
+            Value: createdBy,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Changed at',
+            Value: changedAt,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Changed by',
+            Value: changedBy,
+        },
     ],
 }, );
 
@@ -337,6 +478,66 @@ annotate service.Programs with @(UI.FieldGroup #Program: {
             $Type: 'UI.DataField',
             Label: 'Master Languague',
             Value: masterLanguage,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Master System',
+            Value: masterSystem,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Locked By Editor',
+            Value: lockedByEditor,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'programType',
+            Value: programType,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'sourceObjectStatus',
+            Value: sourceObjectStatus,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'fixPointArithmetic',
+            Value: fixPointArithmetic,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'activeUnicodeCheck',
+            Value: activeUnicodeCheck,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'descriptionTextLimit',
+            Value: descriptionTextLimit,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Master System',
+            Value: masterSystem,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Created At',
+            Value: createdAt,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Created by',
+            Value: createdBy,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Changed at',
+            Value: changedAt,
+        },
+        {
+            $Type: 'UI.DataField',
+            Label: 'Changed by',
+            Value: changedBy,
         },
         {
             $Type: 'UI.DataField',
