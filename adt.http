@@ -79,3 +79,12 @@ GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/source/main
 X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
 X-SAP-ADT-SessionType: Stateless
 Accept: application/*
+
+
+
+### Retrieve ABAP Source Code and ABAP Doc documentation for the Program of the ZAH_BUFFER
+
+GET {{url}}/sap/bc/adt/programs/programs/ZAH_BUFFER/source/main?withAbapDocFromShortTexts=true
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
