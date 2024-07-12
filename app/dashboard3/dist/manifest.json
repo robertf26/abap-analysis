@@ -36,6 +36,12 @@
                         "additionalParameters": "allowed"
                     }
                 }
+            },
+            "outbounds": {
+                "PackageDetails": {
+                    "semanticObject": "Packages",
+                    "action": "View"
+                }
             }
         }
     },
@@ -106,6 +112,21 @@
                     "pattern": "Packages({key}):?query:",
                     "name": "PackagesObjectPage",
                     "target": "PackagesObjectPage"
+                },
+                {
+                    "pattern": "Packages({key})/childrenClasses({key2}):?query:",
+                    "name": "Packages_childrenClassesObjectPage",
+                    "target": "Packages_childrenClassesObjectPage"
+                },
+                {
+                    "pattern": "Packages({key})/childrenPrograms({key2}):?query:",
+                    "name": "Packages_childrenProgramsObjectPage",
+                    "target": "Packages_childrenProgramsObjectPage"
+                },
+                {
+                    "pattern": "Packages({key})/childrenObjects({key2}):?query:",
+                    "name": "Packages_childrenObjectsObjectPage",
+                    "target": "Packages_childrenObjectsObjectPage"
                 }
             ],
             "targets": {
@@ -159,7 +180,62 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "contextPath": "/Packages"
+                            "contextPath": "/Packages",
+                            "navigation": {
+                                "childrenPackages": {
+                                    "detail": {
+                                        "outbound": "PackageDetails"
+                                    }
+                                },
+                                "childrenClasses": {
+                                    "detail": {
+                                        "route": "Packages_childrenClassesObjectPage"
+                                    }
+                                },
+                                "childrenPrograms": {
+                                    "detail": {
+                                        "route": "Packages_childrenProgramsObjectPage"
+                                    }
+                                },
+                                "childrenObjects": {
+                                    "detail": {
+                                        "route": "Packages_childrenObjectsObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "Packages_childrenClassesObjectPage": {
+                    "type": "Component",
+                    "id": "Packages_childrenClassesObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Packages/childrenClasses",
+                            "navigation": {}
+                        }
+                    }
+                },
+                "Packages_childrenProgramsObjectPage": {
+                    "type": "Component",
+                    "id": "Packages_childrenProgramsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Packages/childrenPrograms",
+                            "navigation": {}
+                        }
+                    }
+                },
+                "Packages_childrenObjectsObjectPage": {
+                    "type": "Component",
+                    "id": "Packages_childrenObjectsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Packages/childrenObjects",
+                            "navigation": {}
                         }
                     }
                 }

@@ -14,7 +14,7 @@ X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
 X-SAP-ADT-SessionType: Stateless
  
 ### Retrieve the content of the ZD256_DEMO Package
-POST {{url}}/sap/bc/adt/repository/nodestructure?parent_name=ZD256_DEMO
+POST {{url}}/sap/bc/adt/repository/nodestructure?parent_name=Z001
 X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
 X-SAP-ADT-SessionType: Stateless
  

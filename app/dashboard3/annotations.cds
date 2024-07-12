@@ -103,6 +103,26 @@ annotate service.Packages with @(
                 Label: 'Master Languague',
                 Value: masterLanguage,
             },
+            {
+                $Type: 'UI.DataField',
+                Label: 'Created At',
+                Value: createdAt,
+            },
+            {
+                $Type: 'UI.DataField',
+                Label: 'Created by',
+                Value: createdBy,
+            },
+            {
+                $Type: 'UI.DataField',
+                Label: 'Changed at',
+                Value: changedAt,
+            },
+            {
+                $Type: 'UI.DataField',
+                Label: 'Changed by',
+                Value: changedBy,
+            },
         ],
     },
     UI.HeaderInfo          : {
@@ -124,7 +144,7 @@ annotate service.Objects with @(
             Value: type,
         }
     ],
-    UI.HeaderInfo        : {
+    UI.HeaderInfo       : {
         TypeName      : 'ABAP Object',
         TypeNamePlural: 'ABAP Objects'
     }
@@ -205,7 +225,7 @@ annotate service.Packages with @(UI.Facets: [
         $Type : 'UI.ReferenceFacet',
         Target: 'childrenClasses/@UI.LineItem#Classes',
     },
-        {
+    {
         $Type : 'UI.ReferenceFacet',
         Target: 'childrenObjects/@UI.LineItem#Objects',
     },
@@ -241,7 +261,7 @@ annotate service.Classes with @(UI.FieldGroup #Classes: {
             Label: 'Master Languague',
             Value: masterLanguage,
         },
-                {
+        {
             $Type: 'UI.DataField',
             Label: 'Source Code',
             Value: sourceCode,
@@ -319,7 +339,7 @@ annotate service.Programs with @(UI.FieldGroup #Program: {
             Label: 'Master Languague',
             Value: masterLanguage,
         },
-                {
+        {
             $Type: 'UI.DataField',
             Label: 'Source Code',
             Value: sourceCode,
