@@ -245,5 +245,9 @@
   "sap.fiori": {
     "registrationIds": [],
     "archeType": "analytical"
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "abapanalysis"
   }
 }

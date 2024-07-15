@@ -5,7 +5,7 @@
     {
       "source": "^/odata/(.*)$",
       "target": "/odata/$1",
-      "destination": "TUM_I01_ADT",
+      "destination": "abap-analysis-srv-api",
       "authenticationType": "xsuaa",
       "csrfProtection": false
     },
