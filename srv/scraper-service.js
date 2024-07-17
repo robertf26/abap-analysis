@@ -5,6 +5,7 @@ const { queue } = require('async');
 const { performance } = require('perf_hooks');
 const { createObjectCsvWriter } = require('csv-writer');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 
 // Logging
 const logger = winston.createLogger({
@@ -490,8 +491,33 @@ async function appendToCSV(data, type) {
             await otherObjectCsvWriter.writeRecords(data);
         }
         logger.info(`Data appended to ${type} CSV`);
+        await postProcessCSV(type);
     } catch (error) {
         logger.error(`Failed to append data to ${type} CSV: ${error.message}`);
+    }
+}
+
+async function postProcessCSV(type) {
+    const filePaths = {
+        packages: 'abap.db-Packages.csv',
+        classes: 'abap.db-Classes.csv',
+        programs: 'abap.db-Programs.csv',
+        others: 'abap.db-Objects.csv'
+    };
+
+    const filePath = filePaths[type];
+    if (!filePath) {
+        logger.error(`Invalid type provided for post-processing: ${type}`);
+        return;
+    }
+
+    try {
+        let fileContent = fs.readFileSync(filePath, 'utf8');
+        fileContent = fileContent.replace(/""/g, '#');
+        fs.writeFileSync(filePath, fileContent, 'utf8');
+        logger.info(`Post-processed ${type} CSV file to replace "" with #`);
+    } catch (error) {
+        logger.error(`Failed to post-process ${type} CSV file: ${error.message}`);
     }
 }
 
