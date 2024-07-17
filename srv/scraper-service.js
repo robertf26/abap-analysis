@@ -20,6 +20,8 @@ const logger = winston.createLogger({
 
 const ROOT_LEVEL_ID = uuidv4();
 
+
+// ADJUST SAP SYSTEM URL BEFORE FIRST RUN
 const base_url = "http://TUM_I01_ADT.dest";
 const processedPackages = new Map();
 const concurrency = 60;
@@ -203,6 +205,7 @@ async function processPackage(packageName, csrfToken, cookies, parentId = null) 
         const packages = packageTree['asx:abap']['asx:values']['DATA']['TREE_CONTENT']['SEU_ADT_REPOSITORY_OBJ_NODE'];
         let packageDetails = Array.isArray(packages) ? packages : [packages];
 
+        // ADJUST REGEX TO FILTER FOR CUSTOM PACKAGES
         const filteredPackageDetails = packageDetails.filter(pkg => /^Z|\/ISV/.test(pkg.OBJECT_NAME));
         logger.info(`Processing ${filteredPackageDetails.length} filtered items in package: ${packageIdentifier}`);
 
@@ -381,19 +384,19 @@ const packageCsvWriter = createObjectCsvWriter({
     path: 'abap.db-Packages.csv',
     header: [
         {id: 'ID', title: 'ID'},
-        {id: 'techName', title: 'TECH_NAME'},
-        {id: 'name', title: 'NAME'},
-        {id: 'type', title: 'TYPE'},
-        {id: 'responsible', title: 'RESPONSIBLE'},
-        {id: 'masterLanguage', title: 'MASTER_LANGUAGE'},
-        {id: 'masterSystem', title: 'MASTER_SYSTEM'},
-        {id: 'description', title: 'DESCRIPTION'},
-        {id: 'version', title: 'VERSION'},
-        {id: 'changedAt', title: 'CHANGED_AT'},
-        {id: 'changedBy', title: 'CHANGED_BY'},
-        {id: 'createdAt', title: 'CREATED_AT'},
-        {id: 'createdBy', title: 'CREATED_BY'},
-        {id: 'parent_ID', title: 'PARENT_ID'}
+        {id: 'techName', title: 'techName'},
+        {id: 'name', title: 'name'},
+        {id: 'type', title: 'type'},
+        {id: 'responsible', title: 'responsible'},
+        {id: 'masterLanguage', title: 'masterLanguage'},
+        {id: 'masterSystem', title: 'masterSystem'},
+        {id: 'description', title: 'description'},
+        {id: 'version', title: 'version'},
+        {id: 'changedAt', title: 'changedAt'},
+        {id: 'changedBy', title: 'changedBy'},
+        {id: 'createdAt', title: 'createdAt'},
+        {id: 'createdBy', title: 'createdBy'},
+        {id: 'parent_ID', title: 'parent_ID'}
     ]
 });
 
@@ -401,27 +404,27 @@ const classCsvWriter = createObjectCsvWriter({
     path: 'abap.db-Classes.csv',
     header: [
         {id: 'ID', title: 'ID'},
-        {id: 'final', title: 'FINAL'},
-        {id: 'abstract', title: 'ABSTRACT'},
-        {id: 'visibility', title: 'VISIBILITY'},
-        {id: 'category', title: 'CATEGORY'},
-        {id: 'sharedMemoryEnabled', title: 'SHARED_MEMORY_ENABLED'},
-        {id: 'modeled', title: 'MODELED'},
-        {id: 'fixPointArithmetic', title: 'FIX_POINT_ARITHMETIC'},
-        {id: 'activeUnicodeCheck', title: 'ACTIVE_UNICODE_CHECK'},
-        {id: 'sourceCode', title: 'SOURCE_CODE'},
-        {id: 'name', title: 'NAME'},
-        {id: 'type', title: 'TYPE'},
-        {id: 'responsible', title: 'RESPONSIBLE'},
-        {id: 'masterLanguage', title: 'MASTER_LANGUAGE'},
-        {id: 'masterSystem', title: 'MASTER_SYSTEM'},
-        {id: 'description', title: 'DESCRIPTION'},
-        {id: 'version', title: 'VERSION'},
-        {id: 'changedAt', title: 'CHANGED_AT'},
-        {id: 'changedBy', title: 'CHANGED_BY'},
-        {id: 'createdAt', title: 'CREATED_AT'},
-        {id: 'createdBy', title: 'CREATED_BY'},
-        {id: 'parent_ID', title: 'PARENT_ID'}
+        {id: 'final', title: 'final'},
+        {id: 'abstract', title: 'abstract'},
+        {id: 'visibility', title: 'visibility'},
+        {id: 'category', title: 'category'},
+        {id: 'sharedMemoryEnabled', title: 'sharedMemoryEnabled'},
+        {id: 'modeled', title: 'modeled'},
+        {id: 'fixPointArithmetic', title: 'fixPointArithmetic'},
+        {id: 'activeUnicodeCheck', title: 'activeUnicodeCheck'},
+        {id: 'sourceCode', title: 'sourceCode'},
+        {id: 'name', title: 'name'},
+        {id: 'type', title: 'type'},
+        {id: 'responsible', title: 'responsible'},
+        {id: 'masterLanguage', title: 'masterLanguage'},
+        {id: 'masterSystem', title: 'masterSystem'},
+        {id: 'description', title: 'description'},
+        {id: 'version', title: 'version'},
+        {id: 'changedAt', title: 'changedAt'},
+        {id: 'changedBy', title: 'changedBy'},
+        {id: 'createdAt', title: 'createdAt'},
+        {id: 'createdBy', title: 'createdBy'},
+        {id: 'parent_ID', title: 'parent_ID'}
     ]
 });
 
@@ -429,25 +432,25 @@ const programCsvWriter = createObjectCsvWriter({
     path: 'abap.db-Programs.csv',
     header: [
         {id: 'ID', title: 'ID'},
-        {id: 'lockedByEditor', title: 'LOCKED_BY_EDITOR'},
-        {id: 'programType', title: 'PROGRAM_TYPE'},
-        {id: 'sourceObjectStatus', title: 'SOURCE_OBJECT_STATUS'},
-        {id: 'fixPointArithmetic', title: 'FIX_POINT_ARITHMETIC'},
-        {id: 'activeUnicodeCheck', title: 'ACTIVE_UNICODE_CHECK'},
-        {id: 'descriptionTextLimit', title: 'DESCRIPTION_TEXT_LIMIT'},
-        {id: 'sourceCode', title: 'SOURCE_CODE'},
-        {id: 'name', title: 'NAME'},
-        {id: 'type', title: 'TYPE'},
-        {id: 'responsible', title: 'RESPONSIBLE'},
-        {id: 'masterLanguage', title: 'MASTER_LANGUAGE'},
-        {id: 'masterSystem', title: 'MASTER_SYSTEM'},
-        {id: 'description', title: 'DESCRIPTION'},
-        {id: 'version', title: 'VERSION'},
-        {id: 'changedAt', title: 'CHANGED_AT'},
-        {id: 'changedBy', title: 'CHANGED_BY'},
-        {id: 'createdAt', title: 'CREATED_AT'},
-        {id: 'createdBy', title: 'CREATED_BY'},
-        {id: 'parent_ID', title: 'PARENT_ID'}
+        {id: 'lockedByEditor', title: 'lockedByEditor'},
+        {id: 'programType', title: 'programType'},
+        {id: 'sourceObjectStatus', title: 'sourceObjectStatus'},
+        {id: 'fixPointArithmetic', title: 'fixPointArithmetic'},
+        {id: 'activeUnicodeCheck', title: 'activeUnicodeCheck'},
+        {id: 'descriptionTextLimit', title: 'descriptionTextLimit'},
+        {id: 'sourceCode', title: 'sourceCode'},
+        {id: 'name', title: 'name'},
+        {id: 'type', title: 'type'},
+        {id: 'responsible', title: 'responsible'},
+        {id: 'masterLanguage', title: 'masterLanguage'},
+        {id: 'masterSystem', title: 'masterSystem'},
+        {id: 'description', title: 'description'},
+        {id: 'version', title: 'version'},
+        {id: 'changedAt', title: 'changedAt'},
+        {id: 'changedBy', title: 'changedBy'},
+        {id: 'createdAt', title: 'createdAt'},
+        {id: 'createdBy', title: 'createdBy'},
+        {id: 'parent_ID', title: 'parent_ID'}
     ]
 });
 
@@ -455,18 +458,18 @@ const otherObjectCsvWriter = createObjectCsvWriter({
     path: 'abap.db-Objects.csv',
     header: [
         {id: 'ID', title: 'ID'},
-        {id: 'name', title: 'NAME'},
-        {id: 'type', title: 'TYPE'},
-        {id: 'responsible', title: 'RESPONSIBLE'},
-        {id: 'masterLanguage', title: 'MASTER_LANGUAGE'},
-        {id: 'masterSystem', title: 'MASTER_SYSTEM'},
-        {id: 'description', title: 'DESCRIPTION'},
-        {id: 'version', title: 'VERSION'},
-        {id: 'changedAt', title: 'CHANGED_AT'},
-        {id: 'changedBy', title: 'CHANGED_BY'},
-        {id: 'createdAt', title: 'CREATED_AT'},
-        {id: 'createdBy', title: 'CREATED_BY'},
-        {id: 'parent_ID', title: 'PARENT_ID'}
+        {id: 'name', title: 'name'},
+        {id: 'type', title: 'type'},
+        {id: 'responsible', title: 'responsible'},
+        {id: 'masterLanguage', title: 'masterLanguage'},
+        {id: 'masterSystem', title: 'masterSystem'},
+        {id: 'description', title: 'description'},
+        {id: 'version', title: 'version'},
+        {id: 'changedAt', title: 'changedAt'},
+        {id: 'changedBy', title: 'changedBy'},
+        {id: 'createdAt', title: 'createdAt'},
+        {id: 'createdBy', title: 'createdBy'},
+        {id: 'parent_ID', title: 'parent_ID'}
     ]
 });
 
