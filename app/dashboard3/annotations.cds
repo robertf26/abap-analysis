@@ -40,11 +40,7 @@ annotate service.Packages with @(
 
     UI.SelectionFields                            : [
         name,
-        techName,
-        ID,
-        type,
-        createdAt,
-        masterSystem
+        techName
     ],
 
 
@@ -635,7 +631,7 @@ annotate service.Packages with {
             ],
             PresentationVariantQualifier : 'visualFilter',
         },
-        Common.Label : 'Parent ID'
+        Common.Label : 'Number of Children Packages'
 )};
 
 annotate service.Packages with {
@@ -748,8 +744,6 @@ annotate service.Packages with {
             ],
             PresentationVariantQualifier : 'visualFilter3',
         },
-        Common.Label : 'master system'
+        Common.Label : 'Master System'
 )};
-annotate service.Packages with {
-    masterSystem @Common.Text : masterLanguage
-};
+
