@@ -97,7 +97,3 @@ entity Programs : cuid {
   parent : Association to Packages;
   
 }
-
-entity transportRequest : cuid {
-  
-}
