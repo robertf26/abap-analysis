@@ -19,7 +19,7 @@ service PackageService {
                 'skip'
             ],
             GroupableProperties   : [
-                'masterLanguage','responsible', 'parent_ID', 'masterSystem'
+                'masterLanguage','responsible', 'parent_ID', 'masterSystem', 'type', createdAt
             ],
             AggregatableProperties: [
                 {Property: count},
@@ -28,11 +28,15 @@ service PackageService {
         }},
         Common.SemanticKey: [ID]
     )
+  
     entity Packages as select from db.Packages{
         *, 
         1 as count: Integer
     };
-    entity Objects as projection on db.Objects;
+    entity Objects as projection on db.Objects{
+        *,
+        1 as count: Integer
+    };
     entity Classes as projection on db.Classes;
     entity Programs as projection on db.Programs;
 }

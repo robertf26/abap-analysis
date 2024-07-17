@@ -22,21 +22,9 @@ X-SAP-ADT-SessionType: Stateless
 GET {{url}}/sap/bc/adt/repository/objectstructure?objectname=ZCL_ZD256_CUSTOMER&objecttype=CLAS%2FOC
 X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
 X-SAP-ADT-SessionType: Stateless
- 
-### Retrieve some metadata about the Class from the VIT (to be clarified what VIT is)
-GET {{url}}/sap/bc/adt/vit/wb/object_type/clasom/object_name/ZCL_ZD256_CUSTOMER%20%20%20%20%20%20%20%20%20%20%20%20GET_CUSTOMERS_STATIC
-X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
-X-SAP-ADT-SessionType: Stateless
-Accept: application/*
- 
+
 ### Retrieve Class Metadata of the ZCL_ZD256_CUSTOMER Class
 GET {{url}}/sap/bc/adt/oo/classes/ZCL_ZD256_CUSTOMER
-X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
-X-SAP-ADT-SessionType: Stateless
-Accept: application/*
- 
-### Retrieve ABAP Source Code and ABAP Doc documentation for the Class of the ZCL_ZD256_CUSTOMER Class
-GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/source/main?withAbapDocFromShortTexts=true
 X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
 X-SAP-ADT-SessionType: Stateless
 Accept: application/*
@@ -46,6 +34,20 @@ GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/source/main
 X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
 X-SAP-ADT-SessionType: Stateless
 Accept: application/*
+
+### Retrieve ABAP Source Code and ABAP Doc documentation for the Class of the ZCL_ZD256_CUSTOMER Class
+GET {{url}}/sap/bc/adt/oo/classes/zcl_zd256_customer/source/main?withAbapDocFromShortTexts=true
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+
+ 
+### Retrieve some metadata about the Class from the VIT (to be clarified what VIT is)
+GET {{url}}/sap/bc/adt/vit/wb/object_type/clasom/object_name/ZCL_ZD256_CUSTOMER%20%20%20%20%20%20%20%20%20%20%20%20GET_CUSTOMERS_STATIC
+X-CSRF-Token: {{GetCrsfToken.response.headers.X-CSRF-Token}}
+X-SAP-ADT-SessionType: Stateless
+Accept: application/*
+ 
 
 ### Perform a Search over all programs matching ZD*
 GET {{url}}/sap/bc/adt/repository/informationsystem/search?operation=SEARCH_GENERIC&query=ZD*&objectType=PROG
