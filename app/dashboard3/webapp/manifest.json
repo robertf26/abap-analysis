@@ -1,253 +1,295 @@
 {
-  "_version": "1.59.0",
-  "sap.app": {
-    "id": "dashboard3",
-    "type": "application",
-    "i18n": "i18n/i18n.properties",
-    "applicationVersion": {
-      "version": "0.0.1"
-    },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
-    "resources": "resources.json",
-    "sourceTemplate": {
-      "id": "@sap/generator-fiori:alp",
-      "version": "1.14.1",
-      "toolsId": "e5088cbc-ce7c-4407-a43d-1547cf863dca"
-    },
-    "dataSources": {
-      "mainService": {
-        "uri": "/odata/v4/package/",
-        "type": "OData",
-        "settings": {
-          "annotations": [],
-          "odataVersion": "4.0"
-        }
-      }
-    },
-    "crossNavigation": {
-      "inbounds": {
-        "Packages-View": {
-          "semanticObject": "Packages",
-          "action": "View",
-          "title": "{{flpTitle}}",
-          "signature": {
-            "parameters": {},
-            "additionalParameters": "allowed"
-          }
-        }
-      },
-      "outbounds": {
-        "PackageDetails": {
-          "semanticObject": "Packages",
-          "action": "View"
-        }
-      }
-    }
-  },
-  "sap.ui": {
-    "technology": "UI5",
-    "icons": {
-      "icon": "",
-      "favIcon": "",
-      "phone": "",
-      "phone@2": "",
-      "tablet": "",
-      "tablet@2": ""
-    },
-    "deviceTypes": {
-      "desktop": true,
-      "tablet": true,
-      "phone": true
-    }
-  },
-  "sap.ui5": {
-    "flexEnabled": true,
-    "dependencies": {
-      "minUI5Version": "1.125.1",
-      "libs": {
-        "sap.m": {},
-        "sap.ui.core": {},
-        "sap.ushell": {},
-        "sap.fe.templates": {}
-      }
-    },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
-    },
-    "models": {
-      "i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "dashboard3.i18n.i18n"
-        }
-      },
-      "": {
-        "dataSource": "mainService",
-        "preload": true,
-        "settings": {
-          "operationMode": "Server",
-          "autoExpandSelect": true,
-          "earlyRequests": true
-        }
-      },
-      "@i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "uri": "i18n/i18n.properties"
-      }
-    },
-    "resources": {
-      "css": []
-    },
-    "routing": {
-      "config": {},
-      "routes": [
-        {
-          "pattern": ":?query:",
-          "name": "PackagesList",
-          "target": "PackagesList"
+    "_version": "1.59.0",
+    "sap.app": {
+        "id": "dashboard3",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
         },
-        {
-          "pattern": "Packages({key}):?query:",
-          "name": "PackagesObjectPage",
-          "target": "PackagesObjectPage"
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:alp",
+            "version": "1.14.1",
+            "toolsId": "e5088cbc-ce7c-4407-a43d-1547cf863dca"
         },
-        {
-          "pattern": "Packages({key})/childrenClasses({key2}):?query:",
-          "name": "Packages_childrenClassesObjectPage",
-          "target": "Packages_childrenClassesObjectPage"
-        },
-        {
-          "pattern": "Packages({key})/childrenPrograms({key2}):?query:",
-          "name": "Packages_childrenProgramsObjectPage",
-          "target": "Packages_childrenProgramsObjectPage"
-        },
-        {
-          "pattern": "Packages({key})/childrenObjects({key2}):?query:",
-          "name": "Packages_childrenObjectsObjectPage",
-          "target": "Packages_childrenObjectsObjectPage"
-        }
-      ],
-      "targets": {
-        "PackagesList": {
-          "type": "Component",
-          "id": "PackagesList",
-          "name": "sap.fe.templates.ListReport",
-          "options": {
-            "settings": {
-              "contextPath": "/Packages",
-              "variantManagement": "Page",
-              "navigation": {
-                "Packages": {
-                  "detail": {
-                    "route": "PackagesObjectPage"
-                  }
+        "dataSources": {
+            "mainService": {
+                "uri": "/odata/v4/package/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "odataVersion": "4.0"
                 }
-              },
-              "controlConfiguration": {
-                "@com.sap.vocabularies.UI.v1.LineItem": {
-                  "tableSettings": {
-                    "type": "ResponsiveTable",
-                    "selectionMode": "Auto"
-                  }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "Packages-View": {
+                    "semanticObject": "Packages",
+                    "action": "View",
+                    "title": "{{flpTitle}}",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
                 }
-              },
-              "views": {
-                "paths": [
-                  {
-                    "primary": [
-                      {
-                        "annotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant"
-                      }
-                    ],
-                    "secondary": [
-                      {
-                        "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
-                      }
-                    ],
-                    "defaultPath": "both"
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "PackagesObjectPage": {
-          "type": "Component",
-          "id": "PackagesObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "editableHeaderContent": false,
-              "contextPath": "/Packages",
-              "navigation": {
-                "childrenPackages": {
-                  "detail": {
-                    "outbound": "PackageDetails"
-                  }
-                },
-                "childrenClasses": {
-                  "detail": {
-                    "route": "Packages_childrenClassesObjectPage"
-                  }
-                },
-                "childrenPrograms": {
-                  "detail": {
-                    "route": "Packages_childrenProgramsObjectPage"
-                  }
-                },
-                "childrenObjects": {
-                  "detail": {
-                    "route": "Packages_childrenObjectsObjectPage"
-                  }
+            },
+            "outbounds": {
+                "PackageDetails": {
+                    "semanticObject": "Packages",
+                    "action": "View"
                 }
-              }
             }
-          }
-        },
-        "Packages_childrenClassesObjectPage": {
-          "type": "Component",
-          "id": "Packages_childrenClassesObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "contextPath": "/Packages/childrenClasses",
-              "navigation": {}
-            }
-          }
-        },
-        "Packages_childrenProgramsObjectPage": {
-          "type": "Component",
-          "id": "Packages_childrenProgramsObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "contextPath": "/Packages/childrenPrograms",
-              "navigation": {}
-            }
-          }
-        },
-        "Packages_childrenObjectsObjectPage": {
-          "type": "Component",
-          "id": "Packages_childrenObjectsObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "contextPath": "/Packages/childrenObjects",
-              "navigation": {}
-            }
-          }
         }
-      }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.125.1",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "dashboard3.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "config": {},
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "PackagesList",
+                    "target": "PackagesList"
+                },
+                {
+                    "pattern": "Packages({key}):?query:",
+                    "name": "PackagesObjectPage",
+                    "target": "PackagesObjectPage"
+                },
+                {
+                    "pattern": "Packages({key})/childrenClasses({key2}):?query:",
+                    "name": "Packages_childrenClassesObjectPage",
+                    "target": "Packages_childrenClassesObjectPage"
+                },
+                {
+                    "pattern": "Packages({key})/childrenPrograms({key2}):?query:",
+                    "name": "Packages_childrenProgramsObjectPage",
+                    "target": "Packages_childrenProgramsObjectPage"
+                },
+                {
+                    "pattern": "Packages({key})/childrenObjects({key2}):?query:",
+                    "name": "Packages_childrenObjectsObjectPage",
+                    "target": "Packages_childrenObjectsObjectPage"
+                }
+            ],
+            "targets": {
+                "PackagesList": {
+                    "type": "Component",
+                    "id": "PackagesList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Packages",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "Packages": {
+                                    "detail": {
+                                        "route": "PackagesObjectPage"
+                                    }
+                                }
+                            },
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "tableSettings": {
+                                        "type": "ResponsiveTable",
+                                        "selectionMode": "Auto"
+                                    }
+                                },
+                                "@com.sap.vocabularies.UI.v1.SelectionFields": {
+                                    "layout": "CompactVisual",
+                                    "initialLayout": "Visual",
+                                    "filterFields": {
+                                        "responsible": {
+                                            "availability": "Default",
+                                            "visualFilter": {
+                                                "valueList": "com.sap.vocabularies.Common.v1.ValueList#ResponsibilityList"
+                                            }
+                                        },
+                                        "ID": {
+                                            "visualFilter": {
+                                                "valueList": "com.sap.vocabularies.Common.v1.ValueList#visualFilter"
+                                            }
+                                        },
+                                        "masterSystem": {
+                                            "visualFilter": {
+                                                "valueList": "com.sap.vocabularies.Common.v1.ValueList#visualFilter"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "views": {
+                                "paths": [
+                                    {
+                                        "primary": [
+                                            {
+                                                "annotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant"
+                                            }
+                                        ],
+                                        "secondary": [
+                                            {
+                                                "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
+                                            }
+                                        ],
+                                        "defaultPath": "both"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "PackagesObjectPage": {
+                    "type": "Component",
+                    "id": "PackagesObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "contextPath": "/Packages",
+                            "navigation": {
+                                "childrenPackages": {
+                                    "detail": {
+                                        "outbound": "PackageDetails"
+                                    }
+                                },
+                                "childrenClasses": {
+                                    "detail": {
+                                        "route": "Packages_childrenClassesObjectPage"
+                                    }
+                                },
+                                "childrenPrograms": {
+                                    "detail": {
+                                        "route": "Packages_childrenProgramsObjectPage"
+                                    }
+                                },
+                                "childrenObjects": {
+                                    "detail": {
+                                        "route": "Packages_childrenObjectsObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "Packages_childrenClassesObjectPage": {
+                    "type": "Component",
+                    "id": "Packages_childrenClassesObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Packages/childrenClasses",
+                            "navigation": {}
+                        }
+                    }
+                },
+                "Packages_childrenProgramsObjectPage": {
+                    "type": "Component",
+                    "id": "Packages_childrenProgramsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Packages/childrenPrograms",
+                            "navigation": {}
+                        }
+                    }
+                },
+                "Packages_childrenObjectsObjectPage": {
+                    "type": "Component",
+                    "id": "Packages_childrenObjectsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "contextPath": "/Packages/childrenObjects",
+                            "navigation": {}
+                        }
+                    }
+                },
+                "ObjectsList": {
+                    "options": {
+                        "settings": {
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.SelectionFields": {
+                                    "layout": "CompactVisual",
+                                    "initialLayout": "Visual",
+                                    "filterFields": {
+                                        "type": {
+                                            "availability": "Default",
+                                            "visualFilter": {
+                                                "valueList": "com.sap.vocabularies.Common.v1.ValueList#ObjectsTypes"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "analytical"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "abapanalysis"
     }
-  },
-  "sap.fiori": {
-    "registrationIds": [],
-    "archeType": "analytical"
-  },
-  "sap.cloud": {
-    "public": true,
-    "service": "abapanalysis"
-  }
 }

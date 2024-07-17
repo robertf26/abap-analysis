@@ -40,7 +40,11 @@ annotate service.Packages with @(
 
     UI.SelectionFields                            : [
         name,
-        techName
+        techName,
+        ID,
+        type,
+        createdAt,
+        masterSystem
     ],
 
 
@@ -48,7 +52,7 @@ annotate service.Packages with @(
         Name                : 'NumberPackages',
         AggregationMethod   : 'sum',
         AggregatableProperty: count,
-        ![@Common.Label]    : 'Number of Packages'
+        ![@Common.Label]    : ' '
     },
 
 
@@ -65,6 +69,38 @@ annotate service.Packages with @(
             Dimension: 'masterLanguage',
             Role     : #Category
         }, ]
+    },
+    UI.Chart #PackageResponsibility : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #Bar,
+        Title : 'Package Responsibilities',
+        Description : 'Distribution of responsibilities across different packages',
+        Dimensions : [
+            responsible,
+        ],
+        DimensionAttributes : [
+            {
+                $Type : 'UI.ChartDimensionAttributeType',
+                Dimension : responsible,
+                Role : #Category,
+            },
+        ],
+        DynamicMeasures : [
+            '@Analytics.AggregatedProperty#numberofPackages',
+        ],
+        MeasureAttributes : [
+            {
+                $Type : 'UI.ChartMeasureAttributeType',
+                DynamicMeasure : '@Analytics.AggregatedProperty#numberofPackages',
+                Role : #Axis1,
+            },
+        ],
+    },
+    UI.PresentationVariant #PackageRespOverview : {
+        $Type : 'UI.PresentationVariantType',
+        Visualizations : [
+            '@UI.Chart#PackageResponsibility',
+        ],
     },
 );
 
@@ -553,3 +589,167 @@ annotate service.Programs with @(UI.Facets: [
     $Type : 'UI.ReferenceFacet',
     Target: '@UI.FieldGroup#Program',
 }, ]);
+annotate service.Packages with {
+    responsible @Common.ValueList #ResponsibilityList : {
+        $Type : 'Common.ValueListType',
+        CollectionPath : 'Packages',
+        PresentationVariantQualifier : 'PackageRespOverview',
+        Parameters : [
+            {
+                $Type : 'Common.ValueListParameterInOut',
+                LocalDataProperty : responsible,
+                ValueListProperty : 'responsible',
+            },
+        ],
+    }
+};
+
+annotate service.Packages with @(
+    UI.Chart #visualFilter : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #Bar,
+        Dimensions : [
+            parent_ID,
+        ],
+        DynamicMeasures : [
+            '@Analytics.AggregatedProperty#numberofPackages',
+        ],
+    },
+    UI.PresentationVariant #visualFilter : {
+        $Type : 'UI.PresentationVariantType',
+        Visualizations : [
+            '@UI.Chart#visualFilter',
+        ],
+    }
+);
+annotate service.Packages with {
+    ID @(Common.ValueList #visualFilter : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Packages',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : ID,
+                    ValueListProperty : 'parent_ID',
+                },
+            ],
+            PresentationVariantQualifier : 'visualFilter',
+        },
+        Common.Label : 'Parent ID'
+)};
+
+annotate service.Packages with {
+    responsible @Common.Text : {
+            $value : name,
+            ![@UI.TextArrangement] : #TextFirst,
+        }
+};
+annotate service.Packages with @(
+    UI.Chart #visualFilter1 : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #Bar,
+        Dimensions : [
+            type,
+        ],
+        DynamicMeasures : [
+            '@Analytics.AggregatedProperty#numberofPackages',
+        ],
+    },
+    UI.PresentationVariant #visualFilter1 : {
+        $Type : 'UI.PresentationVariantType',
+        Visualizations : [
+            '@UI.Chart#visualFilter1',
+        ],
+    }
+);
+annotate service.Packages with {
+    type @(Common.Label : ' Type'
+)};
+annotate service.Packages with @(
+    UI.Chart #visualFilter2 : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #Line,
+        Dimensions : [
+            createdAt,
+        ],
+        DynamicMeasures : [
+            '@Analytics.AggregatedProperty#numberofPackages',
+        ],
+        DimensionAttributes : [
+            {
+                Dimension : createdAt,
+                Role : #Series,
+            },
+        ],
+    },
+    UI.PresentationVariant #visualFilter2 : {
+        $Type : 'UI.PresentationVariantType',
+        Visualizations : [
+            '@UI.Chart#visualFilter2',
+        ],
+    }
+);
+annotate service.Packages with {
+    createdAt @(Common.Label : 'createdAt'
+)};
+annotate service.Packages with {
+    createdAt @Common.Text : {
+            $value : name,
+            ![@UI.TextArrangement] : #TextSeparate,
+        }
+};
+annotate service.Packages with @(
+    UI.SelectionVariant #visualFilter : {
+        SelectOptions : [
+            {
+                $Type : 'UI.SelectOptionType',
+                PropertyName : count,
+                Ranges : [
+                    {
+                        Sign : #I,
+                        Option : #EQ,
+                        Low : 0,
+                    },
+                ],
+            },
+        ],
+    }
+);
+annotate service.Packages with @(
+    UI.Chart #visualFilter3 : {
+        $Type : 'UI.ChartDefinitionType',
+        ChartType : #Bar,
+        Dimensions : [
+            masterSystem,
+        ],
+        DynamicMeasures : [
+            '@Analytics.AggregatedProperty#numberofPackages',
+        ],
+    },
+    UI.PresentationVariant #visualFilter3 : {
+        $Type : 'UI.PresentationVariantType',
+        Visualizations : [
+            '@UI.Chart#visualFilter3',
+        ],
+    }
+);
+
+
+annotate service.Packages with {
+    masterSystem @(Common.ValueList #visualFilter : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Packages',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : masterSystem,
+                    ValueListProperty : 'masterSystem',
+                },
+            ],
+            PresentationVariantQualifier : 'visualFilter3',
+        },
+        Common.Label : 'master system'
+)};
+annotate service.Packages with {
+    masterSystem @Common.Text : masterLanguage
+};
