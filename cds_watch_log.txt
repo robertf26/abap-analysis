@@ -1,0 +1,728 @@
+ 
+cds serve all --with-mocks --in-memory? 
+live reload enabled for browsers 
+
+        ___________________________
+ 
+[cds] - loaded model from 7 file(s):
+
+  app/services.cds
+  app/dashboard3/annotations.cds
+  app/dashboard2/annotations.cds
+  app/dashboard/annotations.cds
+  srv/package-service.cds
+  db/data-model.cds
+  node_modules/@sap/cds/common.cds
+[cds] - connect using bindings from: { registry: '~/.cds-services.json' }
+[cds] - connect to db > sqlite { url: ':memory:' }
+  > init from db/data/abap.db-Programs.csv 
+  > init from db/data/abap.db-Packages.csv 
+  > init from db/data/abap.db-Objects.csv 
+  > init from db/data/abap.db-Classes.csv 
+/> successfully deployed to in-memory database. 
+
+[cds] - using auth strategy { kind: 'mocked', impl: 'node_modules/@sap/cds/lib/auth/basic-auth' } 
+
+[cds] - serving PackageService { path: '/odata/v4/package' }
+
+[cds] - server listening on { url: 'http://localhost:4004' }
+[cds] - launched at 7/17/2024, 11:03:32 PM, version: 7.9.2, in: 7.436s
+[cds] - [ terminate with ^C ]
+
+[odata] - HEAD /odata/v4/package/ 
+[odata] - GET /odata/v4/package/$metadata?sap-language=EN 
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '0',
+  '$top': '30'
+}
+[odata] - > READ Packages {
+  entitySet: 'Packages',
+  '$apply': 'groupby((masterLanguage),aggregate(count with sum as NumberPackages))'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '30',
+  '$top': '30'
+}
+[odata] - GET /odata/v4/package/$metadata?sap-language=EN 
+[odata] - HEAD /odata/v4/package/ 
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$orderby': 'NumberPackages desc',
+  '$apply': 'groupby((parent_ID),aggregate(count with sum as NumberPackages))',
+  '$skip': '0',
+  '$top': '3'
+}
+[odata] - > READ Packages {
+  '$orderby': 'NumberPackages desc',
+  '$apply': 'groupby((responsible,name),aggregate(count with sum as NumberPackages))',
+  '$skip': '0',
+  '$top': '3'
+}
+[odata] - > READ Packages {
+  '$orderby': 'NumberPackages desc',
+  '$apply': 'groupby((masterSystem),aggregate(count with sum as NumberPackages))',
+  '$skip': '0',
+  '$top': '3'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '0',
+  '$top': '30'
+}
+[odata] - > READ Packages {
+  entitySet: 'Packages',
+  '$apply': 'groupby((masterLanguage),aggregate(count with sum as NumberPackages))'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(0027d945-4d4d-421e-ac51-97100ffe6ba9) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(0027d945-4d4d-421e-ac51-97100ffe6ba9)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(0027d945-4d4d-421e-ac51-97100ffe6ba9)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(0027d945-4d4d-421e-ac51-97100ffe6ba9)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(0027d945-4d4d-421e-ac51-97100ffe6ba9)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '30',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(00652245-ddae-4e03-988c-6ca4d7bcc2b5)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(00652245-ddae-4e03-988c-6ca4d7bcc2b5)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(00652245-ddae-4e03-988c-6ca4d7bcc2b5)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(00652245-ddae-4e03-988c-6ca4d7bcc2b5)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(00652245-ddae-4e03-988c-6ca4d7bcc2b5) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '60',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(00ae8fbf-f85f-4817-95f0-f4a4e8d9c153)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(00ae8fbf-f85f-4817-95f0-f4a4e8d9c153)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(00ae8fbf-f85f-4817-95f0-f4a4e8d9c153)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(00ae8fbf-f85f-4817-95f0-f4a4e8d9c153)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(00ae8fbf-f85f-4817-95f0-f4a4e8d9c153) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '90',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(015f7492-42ec-4963-b2ba-978c440dc0e8)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(015f7492-42ec-4963-b2ba-978c440dc0e8)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(015f7492-42ec-4963-b2ba-978c440dc0e8)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(015f7492-42ec-4963-b2ba-978c440dc0e8)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(015f7492-42ec-4963-b2ba-978c440dc0e8) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '120',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '150',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '180',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '210',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(0281f7f9-9d3f-4caa-a26c-8617d73724af)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(0281f7f9-9d3f-4caa-a26c-8617d73724af)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(0281f7f9-9d3f-4caa-a26c-8617d73724af)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(0281f7f9-9d3f-4caa-a26c-8617d73724af)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(0281f7f9-9d3f-4caa-a26c-8617d73724af) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '240',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '270',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '300',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '330',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '360',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '390',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '420',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$skip': '450',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(04e6d724-c779-4bae-8259-3e89b3a9c3dc)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(04e6d724-c779-4bae-8259-3e89b3a9c3dc)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(04e6d724-c779-4bae-8259-3e89b3a9c3dc)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(04e6d724-c779-4bae-8259-3e89b3a9c3dc)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(04e6d724-c779-4bae-8259-3e89b3a9c3dc) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$orderby': 'NumberPackages desc',
+  '$apply': 'groupby((parent_ID),aggregate(count with sum as NumberPackages))',
+  '$skip': '0',
+  '$top': '3'
+}
+[odata] - > READ Packages {
+  '$orderby': 'NumberPackages desc',
+  '$apply': 'groupby((responsible,name),aggregate(count with sum as NumberPackages))',
+  '$skip': '0',
+  '$top': '3'
+}
+[odata] - > READ Packages {
+  '$orderby': 'NumberPackages desc',
+  '$apply': 'groupby((masterSystem),aggregate(count with sum as NumberPackages))',
+  '$skip': '0',
+  '$top': '3'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages {
+  '$count': 'true',
+  '$select': 'ID,name,techName,version',
+  '$expand': 'parent($select=ID,name)',
+  '$search': '"ZD256"',
+  '$skip': '0',
+  '$top': '30'
+}
+[odata] - POST /odata/v4/package/$batch 
+[cds] - Error: Feature is not supported: Transformation "SEARCH" with query option $apply
+    at module.exports (/home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/common/error/index.js:5:48)
+    at getFeatureNotSupportedError (/home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/cds-services/util/errors.js:9:10)
+    at applyToCQN (/home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/cds-services/adapter/odata-v4/odata-to-cqn/applyToCQN.js:234:15)
+    at _apply (/home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/cds-services/adapter/odata-v4/odata-to-cqn/readToCQN.js:141:12)
+    at readToCQN (/home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/cds-services/adapter/odata-v4/odata-to-cqn/readToCQN.js:321:17)
+    at module.exports (/home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/cds-services/adapter/odata-v4/odata-to-cqn/index.js:73:14)
+    at new ODataRequest (/home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/cds-services/adapter/odata-v4/ODataRequest.js:147:21)
+    at /home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/cds-services/adapter/odata-v4/handlers/read.js:535:13
+    at /home/user/projects/abap-analysis/node_modules/@sap/cds/libx/_runtime/cds-services/adapter/odata-v4/okra/odata-server/core/Dispatcher.js:135:7
+    at new Promise (<anonymous>) {
+  code: 501,
+  target: undefined,
+  args: undefined,
+  id: '1357728',
+  level: 'ERROR',
+  timestamp: 1721257528024
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenClasses(58999486-996e-4f13-bdd8-1e893251be65) {
+  '$select': 'ID,abstract,activeUnicodeCheck,category,changedAt,changedBy,createdAt,createdBy,description,final,fixPointArithmetic,masterLanguage,masterSystem,modeled,name,responsible,sharedMemoryEnabled,sourceCode,type,version,visibility'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenClasses(6fd53499-f1bf-4aa4-94a9-3e34a3600411) {
+  '$select': 'ID,abstract,activeUnicodeCheck,category,changedAt,changedBy,createdAt,createdBy,description,final,fixPointArithmetic,masterLanguage,masterSystem,modeled,name,responsible,sharedMemoryEnabled,sourceCode,type,version,visibility'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenClasses(495969eb-8620-4416-8133-4edb87f0efee) {
+  '$select': 'ID,abstract,activeUnicodeCheck,category,changedAt,changedBy,createdAt,createdBy,description,final,fixPointArithmetic,masterLanguage,masterSystem,modeled,name,responsible,sharedMemoryEnabled,sourceCode,type,version,visibility'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(df02d9a8-1a3c-4f93-b89d-be276ffdaf3f)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(df02d9a8-1a3c-4f93-b89d-be276ffdaf3f)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(df02d9a8-1a3c-4f93-b89d-be276ffdaf3f)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(df02d9a8-1a3c-4f93-b89d-be276ffdaf3f)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(df02d9a8-1a3c-4f93-b89d-be276ffdaf3f) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(1ac9fc6f-c7e0-4280-9f8e-207973f77e5f)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(1ac9fc6f-c7e0-4280-9f8e-207973f77e5f)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(1ac9fc6f-c7e0-4280-9f8e-207973f77e5f)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(1ac9fc6f-c7e0-4280-9f8e-207973f77e5f)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(1ac9fc6f-c7e0-4280-9f8e-207973f77e5f) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenPrograms {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenClasses {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenObjects {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '0',
+  '$top': '10'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d) {
+  '$select': 'ID,changedAt,changedBy,createdAt,createdBy,description,masterLanguage,name,responsible,techName,version'
+}
+[odata] - POST /odata/v4/package/$batch 
+[odata] - > READ Packages(41080849-b50b-40b4-a569-dcdde537f09d)/childrenPackages {
+  '$count': 'true',
+  '$select': 'ID,description,name,type,version',
+  '$skip': '10',
+  '$top': '3'
+}
+
+        ___________________________
+ 
+[cds] - loaded model from 7 file(s):
+
+  app/services.cds
+  app/dashboard3/annotations.cds
+  app/dashboard2/annotations.cds
+  app/dashboard/annotations.cds
+  srv/package-service.cds
+  db/data-model.cds
+  node_modules/@sap/cds/common.cds
+[cds] - connect using bindings from: { registry: '~/.cds-services.json' }
+[cds] - connect to db > sqlite { url: ':memory:' }
+  > init from db/data/abap.db-Programs.csv 
+
+        ___________________________
+ 
+[cds] - loaded model from 7 file(s):
+
+  app/services.cds
+  app/dashboard3/annotations.cds
+  app/dashboard2/annotations.cds
+  app/dashboard/annotations.cds
+  srv/package-service.cds
+  db/data-model.cds
+  node_modules/@sap/cds/common.cds
+[cds] - connect using bindings from: { registry: '~/.cds-services.json' }
+[cds] - connect to db > sqlite { url: ':memory:' }
+  > init from db/data/abap.db-Programs.csv 
+
+        ___________________________
+ 
+[cds] - loaded model from 7 file(s):
+
+  app/services.cds
+  app/dashboard3/annotations.cds
+  app/dashboard2/annotations.cds
+  app/dashboard/annotations.cds
+  srv/package-service.cds
+  db/data-model.cds
+  node_modules/@sap/cds/common.cds
+[cds] - connect using bindings from: { registry: '~/.cds-services.json' }
+[cds] - connect to db > sqlite { url: ':memory:' }
+  > init from db/data/abap.db-Programs.csv 
+  > init from db/data/abap.db-Packages.csv 
+  > init from db/data/abap.db-Objects.csv 
+  > init from db/data/abap.db-Classes.csv 
+/> successfully deployed to in-memory database. 
+
+[cds] - using auth strategy { kind: 'mocked', impl: 'node_modules/@sap/cds/lib/auth/basic-auth' } 
+
+[cds] - serving PackageService { path: '/odata/v4/package' }
+
+[cds] - server listening on { url: 'http://localhost:4004' }
+[cds] - launched at 7/17/2024, 11:09:13 PM, version: 7.9.2, in: 7.223s
+[cds] - [ terminate with ^C ]
+
+
+        ___________________________
+ 
+[cds] - loaded model from 7 file(s):
+
+  app/services.cds
+  app/dashboard3/annotations.cds
+  app/dashboard2/annotations.cds
+  app/dashboard/annotations.cds
+  srv/package-service.cds
+  db/data-model.cds
+  node_modules/@sap/cds/common.cds
+[cds] - connect using bindings from: { registry: '~/.cds-services.json' }
+[cds] - connect to db > sqlite { url: ':memory:' }
+  > init from db/data/abap.db-Programs.csv 
+
+        ___________________________
+ 
+[cds] - loaded model from 7 file(s):
+
+  app/services.cds
+  app/dashboard3/annotations.cds
+  app/dashboard2/annotations.cds
+  app/dashboard/annotations.cds
+  srv/package-service.cds
+  db/data-model.cds
+  node_modules/@sap/cds/common.cds
+[cds] - connect using bindings from: { registry: '~/.cds-services.json' }
+[cds] - connect to db > sqlite { url: ':memory:' }
+  > init from db/data/abap.db-Programs.csv 
+
+        ___________________________
+ 
+
+        ___________________________
+ 
+[cds] - loaded model from 7 file(s):
+
+  app/services.cds
+  app/dashboard3/annotations.cds
+  app/dashboard2/annotations.cds
+  app/dashboard/annotations.cds
+  srv/package-service.cds
+  db/data-model.cds
+  node_modules/@sap/cds/common.cds
+[cds] - connect using bindings from: { registry: '~/.cds-services.json' }
+[cds] - connect to db > sqlite { url: ':memory:' }
+  > init from db/data/abap.db-Programs.csv 
+  > init from db/data/abap.db-Packages.csv 
+  > init from db/data/abap.db-Objects.csv 
+  > init from db/data/abap.db-Classes.csv 
+/> successfully deployed to in-memory database. 
+
+[cds] - using auth strategy { kind: 'mocked', impl: 'node_modules/@sap/cds/lib/auth/basic-auth' } 
+
+[cds] - serving PackageService { path: '/odata/v4/package' }
+
+[cds] - server listening on { url: 'http://localhost:4004' }
+[cds] - launched at 7/17/2024, 11:09:45 PM, version: 7.9.2, in: 7.376s
+[cds] - [ terminate with ^C ]
+
+
+        ___________________________
+ 
+[cds] - loaded model from 7 file(s):
+
+  app/services.cds
+  app/dashboard3/annotations.cds
+  app/dashboard2/annotations.cds
+  app/dashboard/annotations.cds
+  srv/package-service.cds
+  db/data-model.cds
+  node_modules/@sap/cds/common.cds
+[cds] - connect using bindings from: { registry: '~/.cds-services.json' }
+[cds] - connect to db > sqlite { url: ':memory:' }
+  > init from db/data/abap.db-Programs.csv 
+  > init from db/data/abap.db-Packages.csv 
+  > init from db/data/abap.db-Objects.csv 
+  > init from db/data/abap.db-Classes.csv 
+/> successfully deployed to in-memory database. 
+
+[cds] - using auth strategy { kind: 'mocked', impl: 'node_modules/@sap/cds/lib/auth/basic-auth' } 
+
+[cds] - serving PackageService { path: '/odata/v4/package' }
+
+[cds] - server listening on { url: 'http://localhost:4004' }
+[cds] - launched at 7/17/2024, 11:10:08 PM, version: 7.9.2, in: 7.381s
+[cds] - [ terminate with ^C ]
+
+
+[cds] - my watch has ended.  
+node:fs:1659
+  const stats = binding.stat(
+                        ^
+
+Error: ENOENT: no such file or directory, stat '/home/user/projects/abap-analysis/srv/abap.db-Classes.csv'
+    at statSync (node:fs:1659:25)
+    at FSWatcher.<anonymous> (node:internal/fs/recursive_watch:160:28)
+    at FSWatcher.emit (node:events:518:28)
+    at FSWatcher._handle.onchange (node:internal/fs/watchers:215:12) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'stat',
+  path: '/home/user/projects/abap-analysis/srv/abap.db-Classes.csv'
+}
+
+Node.js v20.12.0
