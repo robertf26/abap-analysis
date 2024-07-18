@@ -151,6 +151,28 @@
                                         "type": "ResponsiveTable",
                                         "selectionMode": "Auto"
                                     }
+                                },
+                                "@com.sap.vocabularies.UI.v1.SelectionFields": {
+                                    "layout": "CompactVisual",
+                                    "initialLayout": "Visual",
+                                    "filterFields": {
+                                        "responsible": {
+                                            "availability": "Default",
+                                            "visualFilter": {
+                                                "valueList": "com.sap.vocabularies.Common.v1.ValueList#ResponsibilityList"
+                                            }
+                                        },
+                                        "ID": {
+                                            "visualFilter": {
+                                                "valueList": "com.sap.vocabularies.Common.v1.ValueList#visualFilter"
+                                            }
+                                        },
+                                        "masterSystem": {
+                                            "visualFilter": {
+                                                "valueList": "com.sap.vocabularies.Common.v1.ValueList#visualFilter"
+                                            }
+                                        }
+                                    }
                                 }
                             },
                             "views": {
@@ -236,6 +258,26 @@
                         "settings": {
                             "contextPath": "/Packages/childrenObjects",
                             "navigation": {}
+                        }
+                    }
+                },
+                "ObjectsList": {
+                    "options": {
+                        "settings": {
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.SelectionFields": {
+                                    "layout": "CompactVisual",
+                                    "initialLayout": "Visual",
+                                    "filterFields": {
+                                        "type": {
+                                            "availability": "Default",
+                                            "visualFilter": {
+                                                "valueList": "com.sap.vocabularies.Common.v1.ValueList#ObjectsTypes"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

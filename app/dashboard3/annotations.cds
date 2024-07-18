@@ -48,7 +48,7 @@ annotate service.Packages with @(
         Name                : 'NumberPackages',
         AggregationMethod   : 'sum',
         AggregatableProperty: count,
-        ![@Common.Label]    : ' '
+        ![@Common.Label]    : 'Packages'
     },
 
 
@@ -631,7 +631,7 @@ annotate service.Packages with {
             ],
             PresentationVariantQualifier : 'visualFilter',
         },
-        Common.Label : 'Number of Children Packages'
+        Common.Label : 'Parent ID'
 )};
 
 annotate service.Packages with {
